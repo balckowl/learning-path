@@ -1,4 +1,4 @@
-import Article, { ArticleType } from "./components/gallery/Article";
+import Article, { ArticleType } from "@/app/components/gallery/Article";
 
 export default function Home() {
   const articles: ArticleType[] = [
@@ -8,15 +8,15 @@ export default function Home() {
       date: "2024/08/24",
       thumbnail: [
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
       ],
-      user_img: "/gallery-page/user-img-sample.png",
+      userImg: "/gallery-page/user-img-sample.png",
       username: "Somahc",
     },
     {
@@ -25,15 +25,15 @@ export default function Home() {
       date: "2024/08/24",
       thumbnail: [
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
       ],
-      user_img: "/gallery-page/user-img-sample.png",
+      userImg: "/gallery-page/user-img-sample.png",
       username: "Somahc",
     },
     {
@@ -42,15 +42,15 @@ export default function Home() {
       date: "2024/08/24",
       thumbnail: [
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
       ],
-      user_img: "/gallery-page/user-img-sample.png",
+      userImg: "/gallery-page/user-img-sample.png",
       username: "Somahc",
     },
     {
@@ -59,15 +59,15 @@ export default function Home() {
       date: "2024/08/24",
       thumbnail: [
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
       ],
-      user_img: "/gallery-page/user-img-sample.png",
+      userImg: "/gallery-page/user-img-sample.png",
       username: "Somahc",
     },
     {
@@ -76,15 +76,15 @@ export default function Home() {
       date: "2024/08/24",
       thumbnail: [
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
         {
-          article_img: "/gallery-page/article-thumbnail-sample.png",
-          article_title: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
+          articleImg: "/gallery-page/article-thumbnail-sample.png",
+          articleTitle: "Parralel RoutesとIntercepting Routesを使用したモーダル実装 モーダル実装 モーダル実装",
         },
       ],
-      user_img: "/gallery-page/user-img-sample.png",
+      userImg: "/gallery-page/user-img-sample.png",
       username: "Somahc",
     },
   ];
