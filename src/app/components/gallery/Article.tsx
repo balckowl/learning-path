@@ -1,6 +1,5 @@
 import PostInfo from "@/app/components/gallery/ArticleInfo";
-
-import ArticleThumbnail from "./ArticleThumbnail";
+import ArticleThumbnail from "@/app/components/gallery/ArticleThumbnail";
 
 export type ArticleType = {
   id: number;
