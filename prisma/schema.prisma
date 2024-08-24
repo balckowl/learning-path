@@ -77,7 +77,7 @@ model Node {
   article   Article  @relation(fields: [articleId], references: [id])
   nodeTitle String
   nodeUrl   String
-  comment   String
+  comment   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   // nodeArticleTitle  // 
