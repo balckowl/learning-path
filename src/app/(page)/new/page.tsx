@@ -52,7 +52,7 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-yellow-400">
+    <div className="bg-yellow-300">
       <div className="flex justify-center px-[10px] py-[20px]">
         <div className="w-full rounded-md bg-white p-8 md:w-[85%] xl:w-3/4 xl:px-[70px]">
           <Form {...form}>

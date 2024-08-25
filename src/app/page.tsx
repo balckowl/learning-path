@@ -9,7 +9,7 @@ export default async function Home() {
   const articleData: GalleryArticle[] = await res.json();
 
   return (
-    <div className="bg-yellow-300">
+    <div className="min-h-[calc(100vh-60px-50px)] bg-yellow-300">
       <div className="container px-[10px] py-[20px]">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {articleData.map((article) => (

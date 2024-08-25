@@ -23,18 +23,18 @@ export default async function Page({ params }: { params: { articleId: string } }
       <div className="flex justify-center px-[10px] py-[20px]">
         <div className="w-full rounded-md bg-white p-8 md:w-[85%] xl:w-3/4 xl:px-[70px]">
           <h1 className="mb-3 text-3xl font-bold">{article.title}</h1>
-          <time className="mb-5 text-gray-600">{format(article.createdAt, "yyyy/MM/dd")}</time>
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex gap-1">
-              <p className="size-fit rounded-full bg-slate-400 p-1 px-3">Next.js</p>
-              <p className="size-fit rounded-full bg-slate-400 p-1 px-3">React</p>
+          <time className="text-gray-600">{format(article.createdAt, "yyyy/MM/dd")}</time>
+          <div className="mb-[15px] mt-[10px] flex items-center justify-between">
+            <div className="flex gap-2">
+              <p className="size-fit rounded-full border-2 p-1 px-3">Next.js</p>
+              <p className="size-fit rounded-full border-2 p-1 px-3">React</p>
             </div>
             <div className="flex items-center gap-3">
               <Avatar className="mx-auto size-10">
-                <AvatarImage src="image/icon.png" className="size-10" />
-                <AvatarFallback>そらち</AvatarFallback>
+                <AvatarImage src={article.author.image} className="size-10" />
+                <AvatarFallback>{article.author.name}</AvatarFallback>
               </Avatar>
-              <h2 className="text-lg font-semibold">Sorachi Nishibori</h2>
+              <h2 className="text-lg font-semibold">{article.author.name}</h2>
             </div>
           </div>
           <div className="relative flex flex-col items-center">
@@ -43,14 +43,7 @@ export default async function Page({ params }: { params: { articleId: string } }
             <div className="z-10 w-full space-y-8">
               {/*後で型作ります*/}
               {article.nodes.map((node) => (
-                <Card
-                  key={node.id}
-                  title={node.nodeTitle}
-                  imageSrc={node.ogp["og:image"]}
-                  imageAlt={node.nodeTitle}
-                  nodeArticleTitle={node.ogp["og:title"]}
-                  content={node.comment}
-                />
+                <Card key={node.id} node={node} />
               ))}
             </div>
           </div>
