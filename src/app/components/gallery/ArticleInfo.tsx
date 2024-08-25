@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { Timer } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { GalleryArticle } from "@/types/gallery-articles";
@@ -13,7 +14,8 @@ export default function ArticleInfo({ article }: { article: GalleryArticle }) {
         </Avatar>
         <p className="text-[15px]">{article.author.name}</p>
       </div>
-      <div>
+      <div className="flex items-center gap-2">
+        <Timer size={18} />
         <time className="text-[15px]">{format(article.createdAt, "yyyy/MM/dd")}</time>
       </div>
     </div>

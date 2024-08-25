@@ -7,7 +7,7 @@ export default function ArticleThumbnail({ article }: { article: GalleryArticle 
     <div className="relative">
       <div className="relative space-y-8">
         <div key={article.nodes[0].id} className="relative">
-          <div className="rounded bg-[#FFDD81] p-2">
+          <div className="rounded border bg-[#fffefc] p-2">
             <Image
               className="h-[200px] w-full object-cover"
               src={article.nodes[0].ogp["og:image"]}

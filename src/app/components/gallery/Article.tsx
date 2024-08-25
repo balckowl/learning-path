@@ -4,7 +4,7 @@ import { GalleryArticle } from "@/types/gallery-articles";
 
 export default function Article({ article }: { article: GalleryArticle }) {
   return (
-    <article className="rounded-xl bg-white px-10 pb-8 pt-4 drop-shadow-lg">
+    <article className="rounded-xl bg-white px-10 pb-8 pt-6 drop-shadow-lg">
       {/* 投稿情報 */}
       <PostInfo article={article} />
 
