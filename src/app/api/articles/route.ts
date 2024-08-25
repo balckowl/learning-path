@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma/client";
 export const GET = async () => {
   const articles = await prisma.article.findMany({
     include: {
+      author: true,
       nodes: true,
     },
   });
