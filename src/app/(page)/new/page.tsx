@@ -19,7 +19,7 @@ const schema = z.object({
         title: z
           .string()
           .min(1, { message: "タイトルを入力してください" })
-          .max(20, { message: "タイトルは最大20文字です" }),
+          .max(30, { message: "タイトルは最大30文字です" }),
         comment: z.string().optional(),
         url: z.string().url({ message: "有効なURLを入力してください" }),
       }),
