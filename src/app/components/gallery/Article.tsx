@@ -20,7 +20,7 @@ export default function Article({ article }: { article: ArticleType }) {
       <PostInfo article={article} />
 
       {/* 記事タイトル */}
-      <h2 className="my-2 text-center text-2xl">{article.title}</h2>
+      <h2 className="my-2 text-xl font-bold">{article.title}</h2>
 
       {/* 記事サムネ */}
       <ArticleThumbnail article={article} />
