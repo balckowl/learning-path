@@ -7,8 +7,6 @@ export const getOgpInfo = async (url: string) => {
     const domParser = new JSDOM().window.DOMParser;
     const dom = new domParser().parseFromString(html, 'text/html');
 
-    console.log(dom);
-
     const ogp = Object.fromEntries(
         [...dom.head.children]
             .filter(
@@ -23,6 +21,8 @@ export const getOgpInfo = async (url: string) => {
                 ];
             })
     );
+
+    console.log(ogp);
 
     return ogp;
 }
