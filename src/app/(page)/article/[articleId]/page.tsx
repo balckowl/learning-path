@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { Timer } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import Card from "@/app/components/layout/article/card";
@@ -23,7 +24,10 @@ export default async function Page({ params }: { params: { articleId: string } }
       <div className="flex justify-center px-[10px] py-[20px]">
         <div className="w-full rounded-md bg-white p-8 md:w-[85%] xl:w-3/4 xl:px-[70px]">
           <h1 className="mb-3 text-3xl font-bold">{article.title}</h1>
-          <time className="text-gray-600">{format(article.createdAt, "yyyy/MM/dd")}</time>
+          <time className="flex items-center gap-2 text-gray-600">
+            <Timer size={18} />
+            {format(article.createdAt, "yyyy/MM/dd")}
+          </time>
           <div className="mb-[15px] mt-[10px] flex items-center justify-between">
             <div className="flex gap-2">
               <p className="size-fit rounded-full border-2 p-1 px-3">Next.js</p>
@@ -42,8 +46,8 @@ export default async function Page({ params }: { params: { articleId: string } }
             <div className="absolute left-1/2 z-0 h-full w-1 -translate-x-1/2 bg-gray-500"></div>
             <div className="z-10 w-full space-y-8">
               {/*後で型作ります*/}
-              {article.nodes.map((node) => (
-                <Card key={node.id} node={node} />
+              {article.nodes.map((node, index) => (
+                <Card key={node.id} node={node} index={index} />
               ))}
             </div>
           </div>
