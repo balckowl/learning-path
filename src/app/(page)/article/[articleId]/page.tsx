@@ -5,16 +5,18 @@ import Card from "@/app/components/layout/article/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { GalleryArticle } from "@/types/gallery-articles";
 
-export default async function Page() {
-  const res = await fetch("http://localhost:3000/api/article/1", {
+export default async function Page({ params }: { params: { articleId: string } }) {
+  const { articleId } = params;
+
+  const res = await fetch(`http://localhost:3000/api/article/${articleId}`, {
     cache: "no-store",
   });
 
-  const article: GalleryArticle = await res.json();
-
-  if (!article) {
+  if (!res.ok) {
     return notFound();
   }
+
+  const article: GalleryArticle = await res.json();
 
   return (
     <div className="bg-yellow-300">
