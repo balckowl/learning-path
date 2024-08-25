@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, CircleX, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ControllerRenderProps, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -16,12 +17,12 @@ const schema = z.object({
   nodes: z
     .array(
       z.object({
-        title: z
+        comment: z.string().optional(),
+        nodeTitle: z
           .string()
           .min(1, { message: "タイトルを入力してください" })
           .max(40, { message: "タイトルは最大40文字です" }),
-        comment: z.string().optional(),
-        url: z.string().url({ message: "有効なURLを入力してください" }),
+        nodeUrl: z.string().url({ message: "有効なURLを入力してください" }),
       }),
     )
     .min(1, { message: "少なくとも1つのアイテムを追加してください" }),
@@ -35,8 +36,8 @@ export default function Page() {
     defaultValues: {
       title: "",
       nodes: [
-        { title: "", comment: "", url: "" },
-        { title: "", comment: "", url: "" },
+        { comment: "", nodeTitle: "", nodeUrl: "" },
+        { comment: "", nodeTitle: "", nodeUrl: "" },
       ],
     },
     resolver: zodResolver(schema),
@@ -47,8 +48,18 @@ export default function Page() {
     control: form.control,
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const router = useRouter();
+
+  const onSubmit = async (data: FormData) => {
+    const { title, nodes } = data;
+
+    await fetch("http://localhost:3000/api/article/new", {
+      body: JSON.stringify({ title, nodes }),
+      method: "POST",
+    });
+
+    router.push("/");
+    router.refresh();
   };
 
   return (
@@ -100,8 +111,12 @@ export default function Page() {
                     <div className="grid w-full gap-3 md:grid-cols-2">
                       <FormField
                         control={form.control}
-                        name={`nodes.${index}.title`}
-                        render={({ field }: { field: ControllerRenderProps<FormData, `nodes.${number}.title`> }) => (
+                        name={`nodes.${index}.nodeTitle`}
+                        render={({
+                          field,
+                        }: {
+                          field: ControllerRenderProps<FormData, `nodes.${number}.nodeTitle`>;
+                        }) => (
                           <FormItem>
                             <FormLabel>タイトル</FormLabel>
                             <FormControl>
@@ -113,8 +128,8 @@ export default function Page() {
                       />
                       <FormField
                         control={form.control}
-                        name={`nodes.${index}.url`}
-                        render={({ field }: { field: ControllerRenderProps<FormData, `nodes.${number}.url`> }) => (
+                        name={`nodes.${index}.nodeUrl`}
+                        render={({ field }: { field: ControllerRenderProps<FormData, `nodes.${number}.nodeUrl`> }) => (
                           <FormItem>
                             <FormLabel>URL</FormLabel>
                             <FormControl>
@@ -143,7 +158,7 @@ export default function Page() {
                 {fields.length < 5 && (
                   <Button
                     type="button"
-                    onClick={() => append({ title: "", comment: "", url: "" })}
+                    onClick={() => append({ comment: "", nodeTitle: "", nodeUrl: "" })}
                     className="flex w-full items-center gap-2 py-6"
                   >
                     <Plus />
