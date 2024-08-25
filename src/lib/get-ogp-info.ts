@@ -22,7 +22,5 @@ export const getOgpInfo = async (url: string) => {
             })
     );
 
-    console.log(ogp);
-
     return ogp;
 }
