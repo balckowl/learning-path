@@ -67,7 +67,7 @@ model Article {
   updatedAt DateTime @updatedAt
   // basename  String   
   title     String
-  Nodes     Node[]
+  nodes     Node[]
 }
 
 model Node {
