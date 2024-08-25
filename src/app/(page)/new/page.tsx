@@ -13,37 +13,37 @@ import { Textarea } from "@/components/ui/textarea";
 
 const schema = z.object({
   title: z.string().min(1, { message: "タイトルを入力してください" }).max(20, { message: "タイトルは最大20文字です" }),
-  items: z
+  nodes: z
     .array(
       z.object({
-        nodeComment: z.string().optional(),
-        nodeTitle: z
+        title: z
           .string()
           .min(1, { message: "タイトルを入力してください" })
           .max(20, { message: "タイトルは最大20文字です" }),
-        nodeUrl: z.string().url({ message: "有効なURLを入力してください" }),
+        comment: z.string().optional(),
+        url: z.string().url({ message: "有効なURLを入力してください" }),
       }),
     )
     .min(1, { message: "少なくとも1つのアイテムを追加してください" }),
 });
 
 type FormData = z.infer<typeof schema>;
-type ItemType = z.infer<typeof schema>["items"][number];
+type ItemType = z.infer<typeof schema>["nodes"][number];
 
 export default function Page() {
   const form = useForm<FormData>({
     defaultValues: {
       title: "",
-      items: [
-        { nodeComment: "", nodeTitle: "", nodeUrl: "" },
-        { nodeComment: "", nodeTitle: "", nodeUrl: "" },
+      nodes: [
+        { title: "", comment: "", url: "" },
+        { title: "", comment: "", url: "" },
       ],
     },
     resolver: zodResolver(schema),
   });
 
   const { append, fields, remove } = useFieldArray({
-    name: "items",
+    name: "nodes",
     control: form.control,
   });
 
@@ -100,12 +100,8 @@ export default function Page() {
                     <div className="grid w-full gap-3 md:grid-cols-2">
                       <FormField
                         control={form.control}
-                        name={`items.${index}.nodeTitle`}
-                        render={({
-                          field,
-                        }: {
-                          field: ControllerRenderProps<FormData, `items.${number}.nodeTitle`>;
-                        }) => (
+                        name={`nodes.${index}.title`}
+                        render={({ field }: { field: ControllerRenderProps<FormData, `nodes.${number}.title`> }) => (
                           <FormItem>
                             <FormLabel>タイトル</FormLabel>
                             <FormControl>
@@ -117,8 +113,8 @@ export default function Page() {
                       />
                       <FormField
                         control={form.control}
-                        name={`items.${index}.nodeUrl`}
-                        render={({ field }: { field: ControllerRenderProps<FormData, `items.${number}.nodeUrl`> }) => (
+                        name={`nodes.${index}.url`}
+                        render={({ field }: { field: ControllerRenderProps<FormData, `nodes.${number}.url`> }) => (
                           <FormItem>
                             <FormLabel>URL</FormLabel>
                             <FormControl>
@@ -131,12 +127,8 @@ export default function Page() {
                     </div>
                     <FormField
                       control={form.control}
-                      name={`items.${index}.nodeComment`}
-                      render={({
-                        field,
-                      }: {
-                        field: ControllerRenderProps<FormData, `items.${number}.nodeComment`>;
-                      }) => (
+                      name={`nodes.${index}.comment`}
+                      render={({ field }: { field: ControllerRenderProps<FormData, `nodes.${number}.comment`> }) => (
                         <FormItem>
                           <FormLabel>コメント</FormLabel>
                           <FormControl>
@@ -151,7 +143,7 @@ export default function Page() {
                 {fields.length < 5 && (
                   <Button
                     type="button"
-                    onClick={() => append({ nodeComment: "", nodeTitle: "", nodeUrl: "" })}
+                    onClick={() => append({ title: "", comment: "", url: "" })}
                     className="flex w-full items-center gap-2 py-6"
                   >
                     <Plus />
