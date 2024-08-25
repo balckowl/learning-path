@@ -1,6 +1,13 @@
 export type GalleryArticle = {
     id: number;
     title: string;
+    author: {
+        id: string;
+        name: string;
+        email: string;
+        emailVerified: string;
+        image: string;
+    };
     authorId: string;
     createdAt: string;
     nodes: Node[];
