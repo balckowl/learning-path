@@ -1,30 +1,26 @@
 // Card.tsx
-
 import Image from "next/image";
+import Link from "next/link";
 
-interface CardProps {
-  title: string;
-  content: string;
-  imageAlt: string;
-  imageSrc: string;
-  nodeArticleTitle: string;
-}
+import { Node } from "@/types/gallery-articles";
 
-export default function Card({ title, content, imageAlt, imageSrc, nodeArticleTitle }: CardProps) {
+export default function Card({ node }: { node: Node }) {
   return (
-    <div className="mx-auto rounded-lg bg-yellow-100 p-6 shadow-md">
-      <h3 className="mb-4 text-lg font-semibold">{title}</h3>
-      <div className="flex flex-col md:flex-row md:items-center">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          width={300}
-          height={200}
-          className="mb-[10px] mr-4 w-full md:mb-0 md:w-[50%]"
-        />
-        <p className="w-full text-xl md:w-[50%]">{nodeArticleTitle}</p>
-      </div>
-      <p className="mt-4 text-gray-700">{content}</p>
+    <div className="mx-auto rounded-lg bg-yellow-100 p-6 shadow-sm">
+      <Link href={node.nodeUrl}>
+        <h3 className="mb-4 text-lg font-semibold">{node.ogp["og:title"]}</h3>
+        <div className="flex flex-col gap-3 md:flex-row md:items-center">
+          <Image
+            src={node.ogp["og:image"]}
+            alt={node.ogp["og:title"]}
+            width={300}
+            height={200}
+            className="mb-[10px] mr-4 w-full md:mb-0 md:w-[35%]"
+          />
+          <p className="w-full text-xl md:w-[65%]">{node.nodeTitle}</p>
+        </div>
+        <p className="mt-4 text-gray-700">{node.comment}</p>
+      </Link>
     </div>
   );
 }
