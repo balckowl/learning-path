@@ -10,9 +10,7 @@ export default async function Home() {
     <div className="bg-yellow-300">
       <div className="container px-[10px] py-[20px]">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {articleData.map((article) => (
-            <Article key={article.id} article={article} />
-          ))}
+          <Article key={articleData[0].id} article={articleData[0]} />
         </div>
       </div>
     </div>
