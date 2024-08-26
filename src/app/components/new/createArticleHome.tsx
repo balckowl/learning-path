@@ -3,7 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, CircleX, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ControllerRenderProps, useFieldArray, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
 
 import Heading from "@/app/components/new/heading";
@@ -49,17 +51,43 @@ export default function CreateArticleHome() {
   });
 
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
+  const [loadingToastId, setLoadingToastId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isSubmitting && !loadingToastId) {
+      const toastId = toast.loading("公開中...");
+      setLoadingToastId(toastId);
+    }
+
+    if (!isSubmitting && loadingToastId) {
+      toast.dismiss(loadingToastId);
+      setLoadingToastId(null);
+    }
+  }, [isSubmitting, loadingToastId]);
 
   const onSubmit = async (data: FormData) => {
-    const { title, nodes } = data;
+    if (isSubmitting || isPublished) return;
+    setIsSubmitting(true);
 
-    await fetch("http://localhost:3000/api/article/new", {
-      body: JSON.stringify({ title, nodes }),
-      method: "POST",
-    });
+    try {
+      const response = await fetch("http://localhost:3000/api/article/new", {
+        body: JSON.stringify({ title: data.title, nodes: data.nodes }),
+        method: "POST",
+      });
 
-    router.push("/");
-    router.refresh();
+      if (!response.ok) throw new Error("公開に失敗しました");
+
+      toast.success("公開完了しました！");
+      setIsPublished(true);
+      router.push("/");
+      router.refresh();
+    } catch {
+      toast.error("公開に失敗しました。もう一度お試しください。");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -170,9 +198,13 @@ export default function CreateArticleHome() {
               {/*公開*/}
               <div>
                 <Heading title="記事の公開" />
-                <Button type="submit" className="flex w-full items-center gap-3 py-6">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || isPublished}
+                  className={`flex w-full items-center gap-3 py-6 ${isSubmitting || isPublished ? "bg-gray-400" : ""}`}
+                >
                   <Check />
-                  公開
+                  {isPublished ? "公開中" : "公開"}
                 </Button>
               </div>
             </form>

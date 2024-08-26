@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 import Footer from "@/app/components/layout/footer";
 import Header from "@/app/components/layout/header/header";
@@ -24,7 +25,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextAuthProvider>
           <Header />
-          <main>{children}</main>
+          <main>
+            <Toaster position="top-center" />
+            {children}
+          </main>
           <Footer />
         </NextAuthProvider>
       </body>
