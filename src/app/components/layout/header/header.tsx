@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { authOptions } from "@/lib/auth";
 
 import CreateArticleBtn from "./create-article-btn";
 import LoginBtn from "./login-btn";

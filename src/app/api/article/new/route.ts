@@ -2,9 +2,8 @@ import { Node } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
+import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma/client";
-
-import { authOptions } from "../../auth/[...nextauth]/route";
 
 export const POST = async (req: NextRequest) => {
   const { title, nodes } = await req.json();
