@@ -8,6 +8,6 @@ Dockerfile
 .prettierrc.json
 .husky
 .eslintrc.json
+.dockerignore
 .env.example
 .env
-.dockerignore
