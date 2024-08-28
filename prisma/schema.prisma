@@ -68,6 +68,7 @@ model Article {
   // basename  String   
   title     String
   nodes     Node[]
+  tags      Tag[]
 }
 
 model Node {
@@ -85,4 +86,11 @@ model Node {
 }
 
 // TODO
-// model Tag 
+model Tag {
+  id        Int       @id @default(autoincrement())
+  name      String
+  articles  Article[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  image     String?
+}
