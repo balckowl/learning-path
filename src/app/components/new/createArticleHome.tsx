@@ -81,6 +81,7 @@ export default function CreateArticleHome() {
 
       toast.success("公開完了しました！");
       setIsPublished(true);
+      form.reset();
       router.push("/");
       router.refresh();
     } catch {
