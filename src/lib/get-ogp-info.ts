@@ -1,6 +1,7 @@
 import { JSDOM } from 'jsdom';
 
 export const getOgpInfo = async (url: string) => {
+    // url = "http://abehiroshi.la.coocan.jp/prof/prof.htm"
     const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
     const response = await fetch(proxyUrl);
     const html = await response.text();
@@ -21,6 +22,9 @@ export const getOgpInfo = async (url: string) => {
                 ];
             })
     );
+
+    if (!ogp["og:image"]) ogp["og:image"] = '/gallery-page/no-image.png';
+    if (!ogp["og:title"]) ogp["og:title"] = 'タイトル未設定';
 
     return ogp;
 }
