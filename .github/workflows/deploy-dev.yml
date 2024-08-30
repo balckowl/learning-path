@@ -23,7 +23,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{env.registry}}/${{github.repository}}
+          images: ${{env.REGISTRY}}/${{github.repository}}
 
 
       - name: Login to GitHub Container Registry
