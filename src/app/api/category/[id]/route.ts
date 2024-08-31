@@ -5,59 +5,52 @@ import prisma from "@/lib/prisma/client";
 
 export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
   const { id } = params;
+
+  // 指定されたカテゴリを取得
   const category = await prisma.category.findUnique({
-    where: { id: id },
+    where: { id },
   });
 
   if (!category) return NextResponse.json({}, { status: 404 });
 
-  const categoryId = category.id;
-
-  // そのカテゴリに属する記事一覧
-  const article = await prisma.article.findMany({
-    where: { categoryId: categoryId },
+  // そのカテゴリに属する記事一覧を取得
+  const articles = await prisma.article.findMany({
+    include: {
+      author: true,
+      category: true,
+      nodes: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    where: { categoryId: id },
   });
 
-  // Front側へ渡す JSON の Schema
-  type AllArticlesInCategoryObj = Array<{
-    id: number;
-    title: string;
-    authorId: string;
-    authorImage: string;
-    authorName: string;
-    createdAt: Date;
-    firstOgp: string;
-    updatedAt: Date;
-  }>;
+  // 各記事のノードのOGP情報を取得し、データ構造を整える
+  const updatedArticles = await Promise.all(
+    articles.map(async (article) => {
+      const updatedNodes = await Promise.all(
+        article.nodes.map(async (node) => {
+          const ogp = await getOgpInfo(node.nodeUrl);
+          return {
+            ...node,
+            ogp,
+          };
+        }),
+      );
 
-  const returnedObj: AllArticlesInCategoryObj = await Promise.all(
-    article.map(async (val) => {
-      const firstNode = await prisma.node.findFirst({
-        orderBy: { order: "asc" },
-        select: {
-          nodeUrl: true,
-        },
-        where: { articleId: val.id },
-      });
-
-      const ogpUrl: string = firstNode?.nodeUrl ? await getOgpInfo(firstNode.nodeUrl) : "";
-
-      const authorInfo = await prisma.user.findUnique({
-        select: {
-          name: true,
-          image: true,
-        },
-        where: { id: val.authorId },
-      });
+      const authorInfo = {
+        authorImage: article.author?.image || "",
+        authorName: article.author?.name || "",
+      };
 
       return {
-        ...val,
-        authorImage: authorInfo?.image ? authorInfo.image : "",
-        authorName: authorInfo?.name ? authorInfo.name : "",
-        firstOgp: ogpUrl,
+        ...article,
+        nodes: updatedNodes,
+        ...authorInfo,
       };
     }),
   );
 
-  return NextResponse.json(returnedObj, { status: 200 });
+  return NextResponse.json({ articles: updatedArticles, totalArticles: articles.length });
 };
