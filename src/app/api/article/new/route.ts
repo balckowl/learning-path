@@ -18,7 +18,7 @@ export const POST = async (req: NextRequest) => {
     data: {
       title,
       authorId,
-      categoryId: Number(categoryId),
+      categoryId: categoryId,
       nodes: {
         create: nodes.map((node: Node) => ({
           comment: node.comment,
