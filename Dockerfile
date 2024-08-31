@@ -8,4 +8,4 @@ COPY . /app
 # RUN npx prisma migrate dev
 # CMD [ "npm", "run", "dev" ]
 ENTRYPOINT [ "sh", "-c" ]
-CMD ["npx prisma generate && npx prisma generate && npm run dev"]
+CMD ["npx prisma generate && npm run dev"]
