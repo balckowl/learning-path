@@ -17,7 +17,7 @@ import { Category } from "@/types/category";
 
 const schema = z.object({
   title: z.string().min(1, { message: "タイトルを入力してください" }).max(40, { message: "タイトルは最大40文字です" }),
-  categoryId: z.string(),
+  categoryId: z.string().min(1, { message: "カテゴリを選択してください" }),
   nodes: z
     .array(
       z.object({
@@ -128,18 +128,23 @@ export default function CreateArticleHome({ categories }: { categories: Category
                   control={form.control}
                   name="categoryId"
                   render={({ field }: { field: ControllerRenderProps<FormData, "categoryId"> }) => (
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="カテゴリを選択" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormItem>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="カテゴリを選択" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
               </div>
