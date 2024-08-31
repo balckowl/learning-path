@@ -1,41 +1,32 @@
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-
-import Article from "@/app/components/gallery/Article";
 import { GalleryArticle } from "@/types/gallery-articles";
 
-export default async function Home() {
-  const res = await fetch(`http:/localhost:3000/api/articles?page=1`, {
-    cache: "no-store",
-  });
+import ArticleSection from "./components/shared/article-section";
+import CategorySection from "./components/shared/category-section";
+import MoreBtn from "./components/top/more-btn";
+import RecommendLogin from "./components/top/recommend-login";
 
-  const articlesBytotalArticles: { articles: GalleryArticle[]; totalArticles: number } = await res.json();
+export default async function Home() {
+  //並列に処理
+  const [articlesResponse, categoriesResponse] = await Promise.all([
+    fetch(`http://localhost:3000/api/articles?page=1`, {
+      cache: "no-store",
+    }),
+    fetch(`http://localhost:3000/api/categories`, {
+      cache: "no-store",
+    }),
+  ]);
+
+  const articlesBytotalArticles: { articles: GalleryArticle[]; totalArticles: number } = await articlesResponse.json();
+  const categories = await categoriesResponse.json();
   const { articles } = articlesBytotalArticles;
 
   return (
-    <div>
-      <div className="bg-yellow-200">
-        <div className="flex justify-center">
-          <div className="w-[95%] px-[10px] pb-[50px] pt-[100px] lg:w-[85%]">
-            <div>
-              <h2 className="mb-[20px] text-[30px] font-bold">新着投稿</h2>
-              <div className="mb-[50px] grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {articles.map((article) => (
-                  <Link href={`/article/${article.id}`} key={article.id}>
-                    <Article article={article} />
-                  </Link>
-                ))}
-              </div>
-              <div className="flex justify-center">
-                <Link href="/" className="flex items-center gap-3 text-yellow-500">
-                  記事一覧へ
-                  <ArrowRight />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <ArticleSection title="新着パス一覧" articles={articles}>
+        <MoreBtn />
+      </ArticleSection>
+      <CategorySection categories={categories} />
+      <RecommendLogin />
+    </>
   );
 }
