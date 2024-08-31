@@ -7,17 +7,11 @@ import RecommendLogin from "./components/top/recommend-login";
 
 export default async function Home() {
   //並列に処理
-  const [articlesResponse, categoriesResponse] = await Promise.all([
-    fetch(`http://localhost:3000/api/articles?page=1`, {
-      cache: "no-store",
-    }),
-    fetch(`http://localhost:3000/api/categories`, {
-      cache: "no-store",
-    }),
-  ]);
+  const res = await fetch(`http://localhost:3000/api/articles?page=1`, {
+    cache: "no-store",
+  });
 
-  const articlesBytotalArticles: { articles: GalleryArticle[]; totalArticles: number } = await articlesResponse.json();
-  const categories = await categoriesResponse.json();
+  const articlesBytotalArticles: { articles: GalleryArticle[]; totalArticles: number } = await res.json();
   const { articles } = articlesBytotalArticles;
 
   return (
@@ -25,7 +19,7 @@ export default async function Home() {
       <ArticleSection title="新着パス一覧" articles={articles}>
         <MoreBtn />
       </ArticleSection>
-      <CategorySection categories={categories} />
+      <CategorySection />
       <RecommendLogin />
     </>
   );
