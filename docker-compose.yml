@@ -9,8 +9,8 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env.example
       - .env
-    # command: npx prisma migrate dev & npm run dev
+      # - .env.example
+    # command: "npm install" 
     volumes:
       - ./src:/app/src
