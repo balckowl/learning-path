@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, CircleX, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -12,10 +11,13 @@ import Heading from "@/app/components/new/heading";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Category } from "@/types/category";
 
 const schema = z.object({
   title: z.string().min(1, { message: "タイトルを入力してください" }).max(40, { message: "タイトルは最大40文字です" }),
+  categoryId: z.string(),
   nodes: z
     .array(
       z.object({
@@ -33,10 +35,11 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 type ItemType = z.infer<typeof schema>["nodes"][number];
 
-export default function CreateArticleHome() {
+export default function CreateArticleHome({ categories }: { categories: Category[] }) {
   const form = useForm<FormData>({
     defaultValues: {
       title: "",
+      categoryId: "",
       nodes: [
         { comment: "", nodeTitle: "", nodeUrl: "" },
         { comment: "", nodeTitle: "", nodeUrl: "" },
@@ -73,7 +76,7 @@ export default function CreateArticleHome() {
 
     try {
       const response = await fetch("http://localhost:3000/api/article/new", {
-        body: JSON.stringify({ title: data.title, nodes: data.nodes }),
+        body: JSON.stringify({ title: data.title, categoryId: data.categoryId, nodes: data.nodes }),
         method: "POST",
       });
 
@@ -117,6 +120,29 @@ export default function CreateArticleHome() {
                   )}
                 />
               </div>
+
+              {/* カテゴリ */}
+              <section>
+                <Heading title="カテゴリを選択" description="この記事のカテゴリを選択してください" />
+                <FormField
+                  control={form.control}
+                  name="categoryId"
+                  render={({ field }: { field: ControllerRenderProps<FormData, "categoryId"> }) => (
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="カテゴリを選択" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category.id.toString()}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </section>
 
               {/*記事ノード*/}
               <div>
