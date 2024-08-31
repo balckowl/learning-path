@@ -1,14 +1,28 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { getOgpInfo } from "@/lib/get-ogp-info";
 import prisma from "@/lib/prisma/client";
 
-export const GET = async () => {
+export const GET = async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url);
+  const page = searchParams.get("page") || "1";
+
+  const pageNumber = parseInt(page, 10);
+  const limit = 9;
+
+  const totalArticles = await prisma.article.count();
+
   const articles = await prisma.article.findMany({
     include: {
       author: true,
+      category: true,
       nodes: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
+    skip: (pageNumber - 1) * limit,
+    take: limit,
   });
 
   const updatedArticles = await Promise.all(
@@ -30,5 +44,5 @@ export const GET = async () => {
     }),
   );
 
-  return NextResponse.json(updatedArticles);
+  return NextResponse.json({ articles: updatedArticles, totalArticles });
 };
