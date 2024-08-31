@@ -6,7 +6,7 @@ import { GalleryArticle } from "@/types/gallery-articles";
 
 export default function ArticleInfo({ article }: { article: GalleryArticle }) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="mb-[10px] flex items-center justify-between">
       <div className="flex items-center gap-3">
         <Avatar className="size-9 border">
           <AvatarImage src={article.author.image} alt="ユーザー画像" className="size-9" />
