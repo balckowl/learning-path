@@ -2,32 +2,33 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { getOgpInfo } from "@/lib/get-ogp-info";
 import prisma from "@/lib/prisma/client";
+import { UsersAllArticles } from "@/types/user-articles";
 
 export const GET = async (req: NextRequest, { params }: { params: { userId: string } }) => {
   // Front側へ渡す JSON の Schema
   // 自分の記事以外も検索することを考え、ユーザが存在するかどうかも返すようにした。
-  type UsersAllArticles = {
-    articles:
-      | Array<{
-          // まあここら辺は back でも `/api/article/[articleId]` をたたけばいい話。全部ほしかったらそこ叩いて。
-          id: number;
-          title: string;
-          // authorId: string;    // ほしかったらコメントアウト解除して
-          // authorImage: string;
-          // authorName: string;
-          categoryId: string;
-          categoryImage: string;
-          categoryName: string;
-          createdAt: Date;
-          firstComment: string;
-          firstOgp: string;
-          firstTitle: string;
-          updatedAt: Date;
-        }>
-      | [];
-    hasArticle: boolean; // そのユーザが記事を所持するか。 false なら articles は空配列
-    userExists: boolean; // もしユーザが存在しないことをエラーとするならコメントアウト
-  };
+  // type UsersAllArticles = {
+  //   articles:
+  //     | Array<{
+  //         // まあここら辺は back でも `/api/article/[articleId]` をたたけばいい話。全部ほしかったらそこ叩いて。
+  //         id: number;
+  //         title: string;
+  //         // authorId: string;    // ほしかったらコメントアウト解除して
+  //         // authorImage: string;
+  //         // authorName: string;
+  //         categoryId: string;
+  //         categoryImage: string;
+  //         categoryName: string;
+  //         createdAt: Date;
+  //         firstComment: string;
+  //         firstOgp: string;
+  //         firstTitle: string;
+  //         updatedAt: Date;
+  //       }>
+  //     | [];
+  //   hasArticle: boolean; // そのユーザが記事を所持するか。 false なら articles は空配列
+  //   userExists: boolean; // もしユーザが存在しないことをエラーとするならコメントアウト
+  // };
 
   const { userId } = params;
 
