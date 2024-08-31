@@ -68,7 +68,7 @@ model Article {
   // basename  String   
   title      String
   nodes      Node[]
-  categoryId Int
+  categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 }
 
@@ -88,7 +88,7 @@ model Node {
 
 // TODO
 model Category {
-  id        Int       @id @default(autoincrement())
+  id        String    @id
   name      String    @unique
   articles  Article[]
   createdAt DateTime  @default(now())
