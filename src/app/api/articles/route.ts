@@ -15,6 +15,7 @@ export const GET = async (req: NextRequest) => {
   const articles = await prisma.article.findMany({
     include: {
       author: true,
+      category: true,
       nodes: true,
     },
     orderBy: {

@@ -7,7 +7,7 @@ export const GET = async (req: NextRequest, { params }: { params: { articleId: s
   const { articleId } = params;
 
   const article = await prisma.article.findUnique({
-    include: { author: true, nodes: true },
+    include: { author: true, category: true, nodes: true },
     where: { id: Number(articleId) },
   });
 
