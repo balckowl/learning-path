@@ -89,7 +89,7 @@ model Node {
 // TODO
 model Category {
   id        Int       @id @default(autoincrement())
-  name      String
+  name      String    @unique
   articles  Article[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
