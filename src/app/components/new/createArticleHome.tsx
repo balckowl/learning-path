@@ -104,8 +104,8 @@ export default function CreateArticleHome({ categories }: { categories: Category
   };
 
   return (
-    <div className="bg-yellow-300">
-      <div className="flex justify-center px-[10px] py-[20px]">
+    <div className="bg-yellow-200">
+      <div className="flex justify-center px-[10px] py-[100px]">
         <div className="w-full rounded-md bg-white p-8 md:w-[85%] xl:w-3/4 xl:px-[70px]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
@@ -216,7 +216,7 @@ export default function CreateArticleHome({ categories }: { categories: Category
                         <FormItem>
                           <FormLabel>コメント</FormLabel>
                           <FormControl>
-                            <Textarea {...field} placeholder="コメントを入力（任意）" className="resize-none" />
+                            <Textarea {...field} placeholder="コメントを入力（任意）" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -227,8 +227,9 @@ export default function CreateArticleHome({ categories }: { categories: Category
                 {fields.length < 5 && (
                   <Button
                     type="button"
+                    variant="outline"
                     onClick={() => append({ comment: "", nodeTitle: "", nodeUrl: "" })}
-                    className="flex w-full items-center gap-2 py-6"
+                    className="flex w-full items-center gap-2 bg-yellow-300 py-6 hover:bg-yellow-400"
                   >
                     <Plus />
                     アイテムを追加
@@ -246,7 +247,7 @@ export default function CreateArticleHome({ categories }: { categories: Category
                       type="button"
                       onClick={() => console.log(form.getValues())}
                       variant="outline"
-                      className="mb-3 flex w-full items-center gap-3 py-3"
+                      className="mb-3 flex w-full items-center gap-3 py-6"
                     >
                       <Eye />
                       プレビュー
@@ -266,8 +267,9 @@ export default function CreateArticleHome({ categories }: { categories: Category
 
                 <Button
                   type="submit"
+                  variant="outline"
                   disabled={isSubmitting || isPublished}
-                  className={`flex w-full items-center gap-3 py-6 ${isSubmitting || isPublished ? "bg-gray-400" : ""}`}
+                  className={`flex w-full items-center gap-3 py-6 ${isSubmitting || isPublished ? "bg-gray-400" : ""} bg-yellow-300 hover:bg-yellow-400`}
                 >
                   <Check />
                   {isPublished ? "公開中" : "公開"}
