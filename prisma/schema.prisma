@@ -88,7 +88,7 @@ model Node {
 
 // TODO
 model Category {
-  id        String       @id 
+  id        String    @id
   name      String    @unique
   articles  Article[]
   createdAt DateTime  @default(now())
