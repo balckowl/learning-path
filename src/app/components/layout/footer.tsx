@@ -5,7 +5,7 @@ export default function Footer() {
     <footer>
       <div className="flex justify-center py-[70px]">
         <div className="flex w-[95%] flex-col items-center rounded-md border p-[30px] lg:w-4/5 lg:p-[100px]">
-          <h2 className="mb-[10px] text-[40px] font-bold lg:text-[80px]">Lets create path.</h2>
+          <h2 className="mb-[10px] text-[40px] font-bold lg:text-[80px]">Let&apos;s create path.</h2>
           <Button>記事を書く</Button>
         </div>
       </div>
