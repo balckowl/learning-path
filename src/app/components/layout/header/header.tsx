@@ -1,3 +1,4 @@
+import { User } from "lucide-react";
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 
@@ -31,6 +32,12 @@ export default async function Header() {
               <PopoverContent align="end" className="w-[170px] p-0">
                 <ul>
                   <li className="border-b p-4 font-bold">{session.user.name}</li>
+                  <Link href={"/myPage"}>
+                    <li className="flex cursor-pointer items-center gap-3 border-b p-4">
+                      <User size={15} />
+                      自分の記事
+                    </li>
+                  </Link>
                   <LogoutBtn />
                 </ul>
               </PopoverContent>
