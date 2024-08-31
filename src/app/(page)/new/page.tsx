@@ -9,9 +9,12 @@ export default async function Page() {
 
   if (!session) return <Blockpage />;
 
+  const categoriesRes = await fetch("http://localhost:3000/api/categories", { cache: "no-store" });
+  const categories = await categoriesRes.json();
+
   return (
     <div>
-      <CreateArticleHome />
+      <CreateArticleHome categories={categories} />
     </div>
   );
 }
