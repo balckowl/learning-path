@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 
-export default async function Home() {
+export default async function myPage() {
   const titles = ["記事1のタイトル", "記事2のタイトル", "記事3のタイトル", "記事4のタイトル", "記事5のタイトル"];
 
   return (
