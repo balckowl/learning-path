@@ -60,7 +60,9 @@
   },
   "lint-staged": {
     "./src/app/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
+      "eslint --fix"
+    ],
+    "./src/**/*.{js,jsx,ts,tsx}": [
       "prettier --write"
     ]
   }
