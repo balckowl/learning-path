@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, CircleX, Plus } from "lucide-react";
+import { Check, CircleX, Eye, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ControllerRenderProps, useFieldArray, useForm } from "react-hook-form";
@@ -8,6 +8,15 @@ import { toast } from "react-hot-toast";
 import { z } from "zod";
 
 import Heading from "@/app/components/new/heading";
+import PreviewArticle from "@/app/components/new/preview-article";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  PreviewDialog,
+} from "@/app/components/new/preview-dialog";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -17,7 +26,7 @@ import { Category } from "@/types/category";
 
 const schema = z.object({
   title: z.string().min(1, { message: "タイトルを入力してください" }).max(40, { message: "タイトルは最大40文字です" }),
-  categoryId: z.string(),
+  categoryId: z.string().min(1, { message: "カテゴリを選択してください" }),
   nodes: z
     .array(
       z.object({
@@ -128,18 +137,23 @@ export default function CreateArticleHome({ categories }: { categories: Category
                   control={form.control}
                   name="categoryId"
                   render={({ field }: { field: ControllerRenderProps<FormData, "categoryId"> }) => (
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="カテゴリを選択" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormItem>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="カテゴリを選択" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
               </div>
@@ -225,6 +239,31 @@ export default function CreateArticleHome({ categories }: { categories: Category
               {/*公開*/}
               <div>
                 <Heading title="記事の公開" />
+
+                <PreviewDialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      type="button"
+                      onClick={() => console.log(form.getValues())}
+                      variant="outline"
+                      className="mb-3 flex w-full items-center gap-3 py-3"
+                    >
+                      <Eye />
+                      プレビュー
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent className="flex h-[90vh] flex-col items-center overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>プレビュー</DialogTitle>
+                    </DialogHeader>
+
+                    <DialogDescription>記事は以下の形式で公開されます</DialogDescription>
+
+                    <PreviewArticle formData={form.getValues()} />
+                  </DialogContent>
+                </PreviewDialog>
+
                 <Button
                   type="submit"
                   disabled={isSubmitting || isPublished}

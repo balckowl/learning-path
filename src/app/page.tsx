@@ -1,33 +1,40 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import Article from "@/app/components/gallery/Article";
 import { GalleryArticle } from "@/types/gallery-articles";
 
-import Pagination from "./components/shared/pagination";
-
-export default async function Home({ searchParams }: { searchParams: { page: string } }) {
-  const page = searchParams.page || "1";
-  const res = await fetch(`http:/localhost:3000/api/articles?page=${page}`, {
+export default async function Home() {
+  const res = await fetch(`http:/localhost:3000/api/articles?page=1`, {
     cache: "no-store",
   });
 
   const articlesBytotalArticles: { articles: GalleryArticle[]; totalArticles: number } = await res.json();
-  const { articles, totalArticles } = articlesBytotalArticles;
-  const limit = 9;
-  const currentPage = parseInt(page, 10);
+  const { articles } = articlesBytotalArticles;
 
   return (
-    <div className="min-h-[calc(100vh-60px-50px)] bg-yellow-300">
-      <div className="container px-[10px] py-[20px]">
-        <div className="mb-[20px] grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {articles.map((article) => (
-            <Link href={`/article/${article.id}`} key={article.id}>
-              <Article article={article} />
-            </Link>
-          ))}
+    <div>
+      <div className="bg-yellow-200">
+        <div className="flex justify-center">
+          <div className="w-[95%] px-[10px] pb-[50px] pt-[100px] lg:w-[85%]">
+            <div>
+              <h2 className="mb-[20px] text-[30px] font-bold">新着投稿</h2>
+              <div className="mb-[50px] grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {articles.map((article) => (
+                  <Link href={`/article/${article.id}`} key={article.id}>
+                    <Article article={article} />
+                  </Link>
+                ))}
+              </div>
+              <div className="flex justify-center">
+                <Link href="/" className="flex items-center gap-3 text-yellow-500">
+                  記事一覧へ
+                  <ArrowRight />
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
-        {/*pagination*/}
-        <Pagination limit={limit} currentPage={currentPage} totalCount={totalArticles} />
       </div>
     </div>
   );
