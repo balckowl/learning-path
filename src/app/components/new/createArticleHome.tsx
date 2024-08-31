@@ -122,7 +122,7 @@ export default function CreateArticleHome({ categories }: { categories: Category
               </div>
 
               {/* カテゴリ */}
-              <section>
+              <div>
                 <Heading title="カテゴリを選択" description="この記事のカテゴリを選択してください" />
                 <FormField
                   control={form.control}
@@ -142,7 +142,7 @@ export default function CreateArticleHome({ categories }: { categories: Category
                     </Select>
                   )}
                 />
-              </section>
+              </div>
 
               {/*記事ノード*/}
               <div>
