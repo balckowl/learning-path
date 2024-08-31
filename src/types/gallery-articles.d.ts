@@ -10,6 +10,10 @@ export type GalleryArticle = {
     };
     authorId: string;
     createdAt: string;
+    category: {
+        id: number;
+        name: string;
+    };
     nodes: Node[];
     updatedAt: string;
 };

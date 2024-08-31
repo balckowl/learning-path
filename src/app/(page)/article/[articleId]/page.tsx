@@ -30,8 +30,7 @@ export default async function Page({ params }: { params: { articleId: string } }
           </time>
           <div className="mb-[15px] mt-[10px] flex items-center justify-between">
             <div className="flex gap-2">
-              <p className="size-fit rounded-full border-2 p-1 px-3">Next.js</p>
-              <p className="size-fit rounded-full border-2 p-1 px-3">React</p>
+              <p className="size-fit rounded-full border-2 p-1 px-3">{article.category.name}</p>
             </div>
             <div className="flex items-center gap-3">
               <Avatar className="mx-auto size-10">
