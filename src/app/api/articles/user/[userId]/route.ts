@@ -16,15 +16,17 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
           // authorImage: string;
           // authorName: string;
           categoryId: string;
+          categoryImage: string;
+          categoryName: string;
           createdAt: Date;
           firstComment: string;
           firstOgp: string;
           firstTitle: string;
           updatedAt: Date;
         }>
-      | []; // もしユーザが存在しないことをエラーとするならコメントアウト
+      | [];
     hasArticle: boolean; // そのユーザが記事を所持するか。 false なら articles は空配列
-    userExists: boolean;
+    userExists: boolean; // もしユーザが存在しないことをエラーとするならコメントアウト
   };
 
   const { userId } = params;
@@ -33,8 +35,6 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
     where: { id: userId },
   });
   // const user = true;
-
-  console.log(user);
 
   // if (user) throw Error("そのIdのユーザは存在しません!")   // もしユーザが存在しないことをエラーとするならコメントアウトを解除せよ
 
@@ -46,7 +46,6 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
     },
   });
 
-  console.log(article);
   const hasArticle = !!article;
 
   let articles: UsersAllArticles["articles"] = [];
@@ -55,8 +54,6 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
     //  UsersAllArticles.articles を作成
     articles = await Promise.all(
       article.map(async (val) => {
-        console.log(val);
-
         const firstNode = await prisma.node.findFirst({
           // 最初のnodeを取得
           orderBy: { order: "asc" },
@@ -78,11 +75,18 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
 
         // });
 
+        const category = await prisma.category.findUnique({
+          select: { name: true, image: true },
+          where: { id: val.categoryId },
+        });
+
         return {
           ...val, // id, authorId, createdAt, updatedAt, title, categoryId
-          firstComment: firstNode?.comment ?? "",
+          categoryImage: category?.image ?? "",
           // authorImage: authorInfo?.image ?? "",
           // authorName: authorInfo?.name ?? "",
+          categoryName: category?.name ?? "",
+          firstComment: firstNode?.comment ?? "",
           firstOgp: ogpUrl,
           firstTitle: firstNode?.nodeTitle ?? "",
         };
