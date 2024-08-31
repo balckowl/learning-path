@@ -6,7 +6,7 @@ import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma/client";
 
 export const POST = async (req: NextRequest) => {
-  const { title, nodes } = await req.json();
+  const { title, categoryId, nodes } = await req.json();
 
   const session = await getServerSession(authOptions);
 
@@ -18,6 +18,7 @@ export const POST = async (req: NextRequest) => {
     data: {
       title,
       authorId,
+      categoryId: Number(categoryId),
       nodes: {
         create: nodes.map((node: Node) => ({
           comment: node.comment,
