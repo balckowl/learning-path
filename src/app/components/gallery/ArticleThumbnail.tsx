@@ -9,7 +9,7 @@ export default function ArticleThumbnail({ article }: { article: GalleryArticle 
         <div key={article.nodes[0].id} className="relative">
           <div className="rounded border bg-[#fffefc] p-2">
             <Image
-              className="h-[200px] w-full object-contain"
+              className="h-[180px] w-full object-cover"
               src={article.nodes[0].ogp["og:image"]}
               width={153}
               height={78}
