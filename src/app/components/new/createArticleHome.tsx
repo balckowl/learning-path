@@ -11,7 +11,6 @@ import Heading from "@/app/components/new/heading";
 import PreviewArticle from "@/app/components/new/preview-article";
 import {
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -256,11 +255,11 @@ export default function CreateArticleHome({ categories }: { categories: Category
 
                   <DialogContent className="flex h-[90vh] flex-col items-center overflow-y-auto">
                     <DialogHeader>
-                      <DialogTitle>プレビュー</DialogTitle>
+                      <DialogTitle className="flex items-center gap-3">
+                        <Eye size={30} />
+                        <p className="text-[30px]">プレビュー</p>
+                      </DialogTitle>
                     </DialogHeader>
-
-                    <DialogDescription>記事は以下の形式で公開されます</DialogDescription>
-
                     <PreviewArticle formData={form.getValues()} />
                   </DialogContent>
                 </PreviewDialog>

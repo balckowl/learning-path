@@ -1,13 +1,13 @@
-import { Pencil } from "lucide-react";
+import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
 export default function CreateArticleBtn() {
   return (
-    <Button variant="ghost" className="flex gap-2" asChild>
+    <Button variant="ghost" className="flex gap-2 rounded-full bg-yellow-300 hover:bg-yellow-400" asChild>
       <Link href="/new">
-        <Pencil size={15} />
+        <PenBoxIcon size={15} />
         投稿する
       </Link>
     </Button>
