@@ -2,7 +2,11 @@ import Link from "next/link";
 
 import { Category } from "@/types/category";
 
-export default function CategorySection({ categories }: { categories: Category[] }) {
+export default async function CategorySection() {
+  const res = await fetch(`http://localhost:3000/api/categories`);
+
+  const categories: Category[] = await res.json();
+
   return (
     <div className="bg-muted">
       <div className="flex justify-center">
@@ -11,7 +15,7 @@ export default function CategorySection({ categories }: { categories: Category[]
             <h2 className="mb-[50px] text-center text-[35px] font-bold">カテゴリ一覧</h2>
             <div className="grid grid-cols-2 gap-7 md:grid-cols-3 lg:grid-cols-4">
               {categories.map((category) => (
-                <Link href={`/categories/${category.id}`} key={category.id}>
+                <Link href={`/category/${category.id}`} key={category.id}>
                   <div className="flex items-center gap-3 rounded-md border bg-white p-4">
                     <div className="size-[60px] rounded-md bg-[#eee]" />
                     <h3 className="text-[17px] font-bold">{category.name}</h3>
