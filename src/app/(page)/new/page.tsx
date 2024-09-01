@@ -9,7 +9,7 @@ export default async function Page() {
 
   if (!session) return <Blockpage />;
 
-  const categoriesRes = await fetch("http://localhost:3000/api/categories", { cache: "no-store" });
+  const categoriesRes = await fetch(`${process.env.BASE_URL}/api/categories`, { cache: "no-store" });
   const categories = await categoriesRes.json();
 
   return (

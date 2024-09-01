@@ -7,7 +7,7 @@ import RecommendLogin from "./components/top/recommend-login";
 
 export default async function Home() {
   //並列に処理
-  const res = await fetch(`http://localhost:3000/api/articles?page=1`, {
+  const res = await fetch(`${process.env.BASE_URL}/api/articles?page=1`, {
     cache: "no-store",
   });
 
