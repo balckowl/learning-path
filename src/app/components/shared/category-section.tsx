@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Category } from "@/types/category";
@@ -17,7 +18,9 @@ export default async function CategorySection() {
               {categories.map((category) => (
                 <Link href={`/category/${category.id}`} key={category.id}>
                   <div className="flex items-center gap-3 rounded-md border bg-white p-4">
-                    <div className="size-[60px] rounded-md bg-[#eee]" />
+                    {category.image && (
+                      <Image src={category.image} width={60} height={60} alt={category.name} className="rounded-md" />
+                    )}
                     <h3 className="text-[17px] font-bold">{category.name}</h3>
                   </div>
                 </Link>
