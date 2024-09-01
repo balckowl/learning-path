@@ -1,12 +1,15 @@
 "use client";
 
-import { Github } from "lucide-react";
+import { LogIn, PenBoxIcon } from "lucide-react";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 
 export default function RecommendLogin() {
+  const { data: session } = useSession();
+
   return (
     <div>
       <div className="flex justify-center">
@@ -17,10 +20,23 @@ export default function RecommendLogin() {
               <p className="mb-[15px]">
                 既存の記事や学習動画からオリジナルのITに関する学習ルートを制作、投稿することができます。
               </p>
-              <Button variant="outline" className="flex w-max items-center gap-3" onClick={() => signIn()}>
-                <Github />
-                ログイン
-              </Button>
+              {!session ? (
+                <Button
+                  variant="outline"
+                  className="flex w-max items-center gap-2 rounded-full py-6"
+                  onClick={() => signIn()}
+                >
+                  <LogIn size={15} />
+                  ログイン
+                </Button>
+              ) : (
+                <Button variant="outline" className="rounded-full" asChild>
+                  <Link href="/new" className="flex w-max items-center gap-2 py-6">
+                    <PenBoxIcon size={15} />
+                    投稿する
+                  </Link>
+                </Button>
+              )}
             </div>
             <div className="xl:col-span-1"></div>
             <div className="col-span-1 flex justify-center">
