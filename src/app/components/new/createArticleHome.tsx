@@ -83,7 +83,7 @@ export default function CreateArticleHome({ categories }: { categories: Category
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${process.env.BASE_URL}/api/article/new`, {
+      const response = await fetch(`/api/article/new`, {
         body: JSON.stringify({ title: data.title, categoryId: data.categoryId, nodes: data.nodes }),
         method: "POST",
       });

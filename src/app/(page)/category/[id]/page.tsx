@@ -3,15 +3,22 @@ import CategorySection from "@/app/components/shared/category-section";
 import Pagination from "@/app/components/shared/pagination";
 import { GalleryArticle } from "@/types/gallery-articles";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams: { page: string };
+}) {
   const { id } = params;
+  const page = searchParams.page ? searchParams.page : "1";
 
-  const res = await fetch(`${process.env.BASE_URL}/api/category/${id}`, {
+  const res = await fetch(`${process.env.BASE_URL}/api/category/${id}?page=${page}`, {
     cache: "no-store",
   });
 
   const articlesBytotalArticles: { articles: GalleryArticle[]; totalArticles: number } = await res.json();
-  const { articles } = articlesBytotalArticles;
+  const { articles, totalArticles } = articlesBytotalArticles;
   const limit = 9;
 
   return (
@@ -19,7 +26,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       {articles.length > 0 ? (
         <ArticleSection articles={articles} title={articles[0].category.name}>
           {/*api側の対応待ち*/}
-          <Pagination totalCount={100} limit={limit} currentPage={1} />
+          <Pagination totalCount={totalArticles} limit={limit} currentPage={Number(page)} />
         </ArticleSection>
       ) : (
         <div className="min-h-[calc(100vh-60px-50px)]">
