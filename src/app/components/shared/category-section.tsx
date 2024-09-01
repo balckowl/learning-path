@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Category } from "@/types/category";
 
 export default async function CategorySection() {
-  const res = await fetch(`http://localhost:3000/api/categories`);
+  const res = await fetch(`${process.env.BASE_URL}/api/categories`);
 
   const categories: Category[] = await res.json();
 

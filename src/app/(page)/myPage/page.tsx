@@ -7,7 +7,7 @@ import { authOptions } from "@/lib/auth";
 import { UsersAllArticles } from "@/types/user-articles";
 
 async function fetchArticles(userId: string) {
-  const res = await fetch(`http://localhost:3000/api/articles/user/${userId}`, {
+  const res = await fetch(`${process.env.BASE_URL}/api/articles/user/${userId}`, {
     cache: "no-store",
   });
 

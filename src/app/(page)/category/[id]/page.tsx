@@ -6,7 +6,7 @@ import { GalleryArticle } from "@/types/gallery-articles";
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
 
-  const res = await fetch(`http://localhost:3000/api/category/${id}`, {
+  const res = await fetch(`${process.env.BASE_URL}/api/category/${id}`, {
     cache: "no-store",
   });
 
