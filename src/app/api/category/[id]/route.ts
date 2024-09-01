@@ -6,6 +6,12 @@ import prisma from "@/lib/prisma/client";
 export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
   const { id } = params;
 
+  // pagenation
+  const { searchParams } = new URL(req.url);
+  const page = searchParams.get("page") || "1";
+  const pageNumber = parseInt(page, 10);
+  const limit = 9;
+
   // 指定されたカテゴリを取得
   const category = await prisma.category.findUnique({
     where: { id },
@@ -23,6 +29,10 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
     orderBy: {
       createdAt: "desc",
     },
+
+    // pagenation
+    skip: (pageNumber - 1) * limit,
+    take: limit,
     where: { categoryId: id },
   });
 
