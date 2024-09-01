@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 
 import DeleteButton from "@/app/components/myPage/delete-button";
@@ -10,7 +11,7 @@ export default async function MyPage() {
 
   if (!session) return <Blockpage />;
 
-  const res = await fetch(`http://localhost:3000/api/articles/user/${session.user.id}`, {
+  const res = await fetch(`${process.env.BASE_URL}/api/articles/user/${session.user.id}`, {
     cache: "no-store",
   });
 
@@ -28,7 +29,8 @@ export default async function MyPage() {
             <div className="container px-[10px] py-[20px]">
               <div className="container mb-[20px]">
                 {articles.map((article) => (
-                  <div
+                  <Link
+                    href={`/article/${article.id}`}
                     key={article.id}
                     className="container relative mb-2 flex w-full items-center justify-between rounded bg-white py-7"
                   >
@@ -37,7 +39,7 @@ export default async function MyPage() {
                     <div className="flex gap-2">
                       <DeleteButton articleId={article.id} />
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
