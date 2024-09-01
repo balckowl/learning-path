@@ -8,9 +8,9 @@ services:
     tty: true
     ports:
       - "3000:3000"
-    env_file:
-      - .env
-      # - .env.example
+    # env_file:
+    #   - .env
+    #   - .env.example
     # command: "npm install" 
     volumes:
       - ./src:/app/src

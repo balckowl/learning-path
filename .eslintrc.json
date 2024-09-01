@@ -22,6 +22,7 @@
     }
   },
   "rules": {
+    "@typescript-eslint/no-empty-object-type": "off",
     "sort-keys-custom-order/object-keys": [
       "error",
       {
