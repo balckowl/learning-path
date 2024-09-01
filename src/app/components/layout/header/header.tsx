@@ -1,4 +1,5 @@
 import { User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 
@@ -18,7 +19,10 @@ export default async function Header() {
       <div className="flex h-full justify-center">
         <div className="flex h-full w-[95%] items-center justify-between lg:w-[70%]">
           <Link href="/">
-            <h1 className="text-[25px] font-bold">Tech Path</h1>
+            <div className="flex items-center gap-2">
+              <Image src={"/image/logo.svg"} alt={"og_title"} width={40} height={40} />
+              <h1 className="text-[25px] font-bold">Tech Path</h1>
+            </div>
           </Link>
           <div className="flex items-center gap-5">
             {/*ユーザーアイコン*/}
