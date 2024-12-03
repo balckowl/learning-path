@@ -1,9 +1,9 @@
 #バージョン20以上だとnpm run dev時に警告が出る
-FROM node:23-alpine3.19
+FROM oven/bun:latest
 WORKDIR /app
 COPY ./package.json /app/package.json
-RUN npm install
-RUN npm i prisma@5.19.0 @prisma/client@5.19.0
+RUN bun install
+RUN bun install prisma@5.19.0 @prisma/client@5.19.0
 COPY . /app
 # RUN npx prisma migrate dev
-CMD [ "npm", "run", "dev" ]
+CMD [ "bun", "run", "dev" ]

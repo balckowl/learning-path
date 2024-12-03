@@ -1,11 +1,11 @@
 node_modules
 docker-compose.yml
 README.md  
-Dockerfile
+Dockerfile*
 .github 
 .gitignore
 .git
-.prettierrc.json
-.husky
-.eslintrc.json
+# .prettierrc.json
+# .husky
+# .eslintrc.json
 .dockerignore
