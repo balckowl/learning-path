@@ -1,11 +1,12 @@
-# version: '3.7'
+version: '3.9'
 services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-    stdin_open: true
-    tty: true
+      dockerfile: Dockerfile.dev
+    restart: always
+    # stdin_open: true
+    # tty: true
     ports:
       - "3000:3000"
     # env_file:
