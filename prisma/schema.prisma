@@ -103,12 +103,12 @@ model ArticleTag {
   id        String  @id
   articleId Int
   article   Article @relation(fields: [articleId], references: [id])
-  tagId     Int
+  tagId     String
   tag       Tag     @relation(fields: [tagId], references: [id])
 }
 
 model Tag {
-  id       Int          @id
+  id       String          @id
   name     String       @unique
   articles ArticleTag[]
 }
