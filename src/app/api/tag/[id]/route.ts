@@ -28,6 +28,12 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
           nodes: true,
         },
       },
+      tag: true,
+    },
+    orderBy: {
+      article: {
+        createdAt: "desc",
+      },
     },
     skip: (pageNumber - 1) * limit,
     take: limit,
