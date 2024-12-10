@@ -9,7 +9,16 @@ export const GET = async (req: NextRequest, { params }: { params: { articleId: s
   const { articleId } = params;
 
   const article = await prisma.article.findUnique({
-    include: { author: true, category: true, nodes: true },
+    include: {
+      author: true,
+      category: true,
+      nodes: true,
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
+    },
     where: { id: Number(articleId) },
   });
 
@@ -25,9 +34,13 @@ export const GET = async (req: NextRequest, { params }: { params: { articleId: s
     }),
   );
 
+  // タグ情報を整形
+  const tags = article.tags.map((tagRelation) => tagRelation.tag);
+
   const updatedArticle = {
     ...article,
     nodes: updatedNodes,
+    tags,
   };
 
   return NextResponse.json(updatedArticle, { status: 200 });
@@ -35,35 +48,38 @@ export const GET = async (req: NextRequest, { params }: { params: { articleId: s
 
 export const DELETE = async (req: NextRequest, { params }: { params: { articleId: string } }) => {
   const session = await getServerSession(authOptions);
-  if (!session) throw Error("認証してくださいね!");
+  if (!session) throw new Error("認証してくださいね!");
 
   const { id: authorId } = session.user;
   const id = Number(params.articleId);
-  if (!id) throw Error("無効なURLです");
+  if (!id) throw new Error("無効なURLです");
+
   const article = await prisma.article.findUnique({
-    where: {
-      id: id,
-    },
-  });
-  console.log(article);
-  if (article?.authorId != authorId) throw Error("他のユーザの記事を消そうとしています!");
-
-  const { count } = await prisma.node.deleteMany({
-    where: {
-      articleId: id,
-    },
+    where: { id },
   });
 
-  const deleteArticle = await prisma.article.delete({
-    where: {
-      id: id,
-    },
+  if (!article) throw new Error("指定された記事が見つかりません!");
+  if (article.authorId !== authorId) throw new Error("他のユーザの記事を消そうとしています!");
+
+  // トランザクションで削除処理を実行
+  const result = await prisma.$transaction(async (prisma) => {
+    // ノードの削除
+    const deletedNodesCount = await prisma.node.deleteMany({
+      where: { articleId: id },
+    });
+
+    // ArticleTags の削除
+    await prisma.articleTag.deleteMany({
+      where: { articleId: id },
+    });
+
+    // 記事の削除
+    const deletedArticle = await prisma.article.delete({
+      where: { id },
+    });
+
+    return { deletedArticle, deletedNodesCount };
   });
 
-  const returnObj = {
-    deletedArticle: deleteArticle,
-    deletedNodesCount: count,
-  };
-
-  return NextResponse.json({ returnObj }, { status: 200 });
+  return NextResponse.json({ result }, { status: 200 });
 };
