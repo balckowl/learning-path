@@ -51,6 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Articles      Article[]
+  likes         Like[]
 }
 
 model VerificationToken {
@@ -73,6 +74,7 @@ model Article {
   categoryId String
   category   Category     @relation(fields: [categoryId], references: [id])
   tags       ArticleTag[]
+  likes      Like[]
 }
 
 model Node {
@@ -108,7 +110,15 @@ model ArticleTag {
 }
 
 model Tag {
-  id       String          @id
+  id       String       @id
   name     String       @unique
   articles ArticleTag[]
+}
+
+model Like {
+  id        Int     @id @default(autoincrement())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  articleId Int
+  article   Article @relation(fields: [articleId], references: [id])
 }
