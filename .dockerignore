@@ -7,5 +7,6 @@ Dockerfile*
 .git
 # .prettierrc.json
 # .husky
-# .eslintrc.json
+.eslintrc.json
 .dockerignore
+

@@ -3,7 +3,7 @@ FROM node:23-alpine3.19
 WORKDIR /app
 COPY ./package.json /app/package.json
 RUN npm install
-RUN npm i prisma@5.19.0 @prisma/client@5.19.0
+RUN npx -y prisma generate
 COPY . /app
 # RUN npx prisma migrate dev
 CMD [ "npm", "run", "dev" ]

@@ -1,0 +1,67 @@
+FROM node:20-alpine AS builder
+
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG DATABASE_URL
+
+# ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+# ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+# ENV DATABASE_URL=$DATABASE_URL
+
+WORKDIR /learning-path
+
+RUN apk add --no-cache openssl
+
+COPY package.json package-lock.json ./
+# COPY .env .env.production ./
+
+RUN adduser -S appuser -u 1001 && \
+    chown -R appuser . && \
+    # .nextディレクトリを作成し、権限を設定
+    mkdir .next && \
+    chown -R appuser .next
+
+USER appuser
+
+COPY --chown=appuser . .
+
+RUN npm install && \ 
+    npx prisma generate && \
+    npm run build
+
+
+FROM node:20-alpine AS runtime
+
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG DATABASE_URL
+
+# ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+# ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+# ENV DATABASE_URL=$DATABASE_URL
+
+WORKDIR /learning-path
+# COPY .env .env.production ./
+
+RUN apk add --no-cache openssl && apk add curl
+
+RUN adduser -S appuser -u 1001 && \
+    chown -R appuser .
+
+# COPY --chown=appuser --from=builder /learning-path/.next/standalone ./
+# COPY --chown=appuser --from=builder /learning-path/public ./public
+# COPY --chown=appuser --from=builder /learning-path/.next/static ./.next/static
+COPY --chown=appuser --from=builder /learning-path/.next ./.next
+COPY --chown=appuser --from=builder /learning-path/public ./public
+COPY --chown=appuser --from=builder /learning-path/package.json ./
+COPY --chown=appuser --from=builder /learning-path/node_modules ./node_modules
+
+
+# RUN npm install --omit=dev --ignore-scripts 
+USER appuser
+
+
+EXPOSE 3000
+
+# CMD ["node", "server.js"]
+CMD ["npm", "run", "start"]
