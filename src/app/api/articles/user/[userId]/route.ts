@@ -42,10 +42,23 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
   const userExists = !!user; // もしユーザが存在しないことをエラーとするならコメントアウトせよ
 
   const article = await prisma.article.findMany({
+    // これでいいのでは？
+    // include: {
+    //   category: true
+    // }
+    include: {
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
+    },
     where: {
       authorId: userId,
     },
   });
+
+  console.log(article);
 
   const hasArticle = !!article;
 
@@ -76,13 +89,14 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
 
         // });
 
+        //ここでカテゴリを別で取得してる理由は？includeでよくないですか？
         const category = await prisma.category.findUnique({
           select: { name: true, image: true },
           where: { id: val.categoryId },
         });
 
         return {
-          ...val, // id, authorId, createdAt, updatedAt, title, categoryId
+          ...val, // id, authorId, createdAt, updatedAt, title, categoryId,tagsの中にtag
           categoryImage: category?.image ?? "",
           // authorImage: authorInfo?.image ?? "",
           // authorName: authorInfo?.name ?? "",

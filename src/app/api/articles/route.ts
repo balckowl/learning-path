@@ -17,6 +17,11 @@ export const GET = async (req: NextRequest) => {
       author: true,
       category: true,
       nodes: true,
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",
@@ -25,6 +30,7 @@ export const GET = async (req: NextRequest) => {
     take: limit,
   });
 
+  // 各記事のノードのOGP情報を取得し、データ構造を整える
   const updatedArticles = await Promise.all(
     articles.map(async (article) => {
       const updatedNodes = await Promise.all(
@@ -37,9 +43,13 @@ export const GET = async (req: NextRequest) => {
         }),
       );
 
+      // タグ情報を整形
+      const tags = article.tags.map((tagRelation) => tagRelation.tag);
+
       return {
         ...article,
         nodes: updatedNodes,
+        tags, // タグ情報を含める
       };
     }),
   );
