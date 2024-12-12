@@ -25,7 +25,9 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
       article: {
         include: {
           author: true,
+          category: true,
           nodes: true,
+          tags: true,
         },
       },
       tag: true,
@@ -62,6 +64,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
         ...article,
         nodes: updatedNodes,
         ...authorInfo,
+        tag,
       };
     }),
   );

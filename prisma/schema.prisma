@@ -100,7 +100,7 @@ model Category {
 }
 
 model ArticleTag {
-  id        String  @id
+  id        Int          @id @default(autoincrement())
   articleId Int
   article   Article @relation(fields: [articleId], references: [id])
   tagId     String
