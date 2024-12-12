@@ -25,6 +25,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
       author: true,
       category: true,
       nodes: true,
+      tags: true,
     },
     orderBy: {
       createdAt: "desc",

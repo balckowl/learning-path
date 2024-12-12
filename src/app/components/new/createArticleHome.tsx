@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Category } from "@/types/category";
@@ -38,12 +39,25 @@ const schema = z.object({
       }),
     )
     .min(1, { message: "少なくとも1つのアイテムを追加してください" }),
+  tags: z
+    .array(
+      z.object({
+        label: z.string(),
+        value: z.string(),
+      }),
+    )
+    .length(3, { message: "タグは3つまで指定してください。" }),
 });
 
 type FormData = z.infer<typeof schema>;
 type ItemType = z.infer<typeof schema>["nodes"][number];
 
-export default function CreateArticleHome({ categories }: { categories: Category[] }) {
+type Props = {
+  categories: Category[];
+  options: Option[];
+};
+
+export default function CreateArticleHome({ categories, options }: Props) {
   const form = useForm<FormData>({
     defaultValues: {
       title: "",
@@ -52,6 +66,7 @@ export default function CreateArticleHome({ categories }: { categories: Category
         { comment: "", nodeTitle: "", nodeUrl: "" },
         { comment: "", nodeTitle: "", nodeUrl: "" },
       ],
+      tags: [],
     },
     resolver: zodResolver(schema),
   });
@@ -84,7 +99,12 @@ export default function CreateArticleHome({ categories }: { categories: Category
 
     try {
       const response = await fetch(`/api/article/new`, {
-        body: JSON.stringify({ title: data.title, categoryId: data.categoryId, nodes: data.nodes }),
+        body: JSON.stringify({
+          title: data.title,
+          categoryId: data.categoryId,
+          nodes: data.nodes,
+          tagIds: data.tags.map((tag) => tag.value),
+        }),
         method: "POST",
       });
 
@@ -151,6 +171,31 @@ export default function CreateArticleHome({ categories }: { categories: Category
                           ))}
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="tags"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Heading title="タグを選択" description="この記事のタグを選択してください" />
+                      <FormControl>
+                        <MultipleSelector
+                          {...field}
+                          defaultOptions={options}
+                          placeholder="タグを選択"
+                          emptyIndicator={
+                            <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                              no results found.
+                            </p>
+                          }
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -231,7 +276,7 @@ export default function CreateArticleHome({ categories }: { categories: Category
                     className="flex w-full items-center gap-2 bg-yellow-300 py-6 hover:bg-yellow-400"
                   >
                     <Plus />
-                    アイテムを追加
+                    ノードの追加
                   </Button>
                 )}
               </div>

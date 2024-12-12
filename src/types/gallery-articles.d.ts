@@ -1,3 +1,5 @@
+import { Tag } from "@prisma/client";
+
 export type GalleryArticle = {
   id: number;
   title: string;
@@ -16,6 +18,7 @@ export type GalleryArticle = {
   createdAt: string;
   nodes: Node[];
   updatedAt: string;
+  tags: Tag[];
 };
 
 export type Node = {

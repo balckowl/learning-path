@@ -13,7 +13,7 @@ export default async function Page({
   const { id } = params;
   const page = searchParams.page ? searchParams.page : "1";
 
-  const res = await fetch(`${process.env.BASE_URL}/api/category/${id}?page=${page}`, {
+  const res = await fetch(`${process.env.BASE_URL}/api/tag/${id}?page=${page}`, {
     cache: "no-store",
   });
 
@@ -21,10 +21,12 @@ export default async function Page({
   const { articles, totalArticles } = articlesBytotalArticles;
   const limit = 9;
 
+  console.log(articles);
+
   return (
     <div>
-      {articles?.length > 0 ? (
-        <ArticleSection articles={articles} title={articles[0].category.name}>
+      {articles.length > 0 ? (
+        <ArticleSection articles={articles} title={articles[0].tag.name}>
           {/*api側の対応待ち*/}
           <Pagination totalCount={totalArticles} limit={limit} currentPage={Number(page)} />
         </ArticleSection>
