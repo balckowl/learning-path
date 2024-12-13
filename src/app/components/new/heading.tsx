@@ -12,7 +12,7 @@ export default function Heading({ title, description }: Props) {
         <Play />
         <span className="text-[25px] font-bold">{title}</span>
       </h2>
-      {description && <p className="text-[12px] text-[#ccc]">{description}</p>}
+      {description && <p className="text-[12px]">{description}</p>}
     </div>
   );
 }

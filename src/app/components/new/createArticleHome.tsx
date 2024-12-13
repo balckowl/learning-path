@@ -186,7 +186,7 @@ export default function CreateArticleHome({ categories, options }: Props) {
                   name="tags"
                   render={({ field }) => (
                     <FormItem>
-                      <Heading title="タグを選択" description="この記事のタグを選択してください" />
+                      <Heading title="タグを選択" description="この記事のタグを3つ選択してください" />
                       <FormControl>
                         <MultipleSelector
                           {...field}
