@@ -1,7 +1,8 @@
+import { AvatarFallback } from "@radix-ui/react-avatar";
 import { format } from "date-fns";
 import { Timer } from "lucide-react";
-import Image from "next/image";
 
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { GalleryArticle } from "@/types/gallery-articles";
 
 export default function Article({ article }: { article: GalleryArticle }) {
@@ -12,25 +13,26 @@ export default function Article({ article }: { article: GalleryArticle }) {
   const truncatedTitle = truncateTitle(article.title, 20);
 
   return (
-    <article className="relative rounded-xl bg-white px-4 py-3 shadow-sm">
-      {/*タグ*/}
-      <div className="absolute left-0 top-0 bg-yellow-400 px-3 py-1 text-[13px]">{article.category.name}</div>
+    <article className="relative rounded-xl border-2 border-black bg-white px-4 py-3 shadow-sm duration-300 hover:bg-slate-100">
+      {/* タイトルとカテゴリ */}
+      <div className="h-[150px]">
+        <h2 className="mb-[5px] text-2xl font-bold">{truncatedTitle}</h2>
+        <p className="inline-block rounded-xl bg-green-200 p-[0.5em] text-xs">{article.category.name}</p>
+      </div>
 
-      <Image
-        className="my-[30px] h-[180px] w-full object-contain sm:mb-[10px] sm:mt-0"
-        src={article.nodes[0].ogp["og:image"]}
-        width={153}
-        height={78}
-        alt={article.nodes[0].ogp["og:title"]}
-      />
-
-      {/* 記事タイトル */}
-      <h2 className="mb-[5px] text-lg font-bold">{truncatedTitle}</h2>
-
-      {/*投稿日時*/}
-      <div className="flex items-center justify-end gap-2">
-        <Timer size={13} />
-        <time className="text-[10px]">{format(article.createdAt, "yyyy/MM/dd")}</time>
+      {/* 投稿情報 */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <Avatar className="">
+            <AvatarImage src={article.author.image} alt={article.author.name} />
+            <AvatarFallback>{article.author.name[0]}</AvatarFallback>
+          </Avatar>
+          <p>{article.author.name}</p>
+        </div>
+        <div className="flex items-center">
+          <Timer size={13} />
+          <time className="">{format(article.createdAt, "yyyy/MM/dd")}</time>
+        </div>
       </div>
     </article>
   );
