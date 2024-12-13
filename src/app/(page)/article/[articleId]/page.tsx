@@ -92,8 +92,8 @@ export default async function Page({ params }: { params: { articleId: string } }
               </div>
               <div className="flex-1 space-y-8">
                 {/*後で型作ります*/}
-                {article.nodes.map((node, index) => (
-                  <Card key={node.id} node={node} index={index} />
+                {article.nodes.map((node) => (
+                  <Card key={node.id} node={node} />
                 ))}
               </div>
             </div>
