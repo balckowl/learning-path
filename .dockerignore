@@ -9,4 +9,7 @@ Dockerfile*
 # .husky
 .eslintrc.json
 .dockerignore
+.env
+.env*
+
 
