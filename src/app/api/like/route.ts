@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma/client";
@@ -37,6 +38,9 @@ export async function POST(request: Request) {
 
       return { action: "added" };
     });
+
+    revalidateTag("likes");
+    revalidateTag("likes2");
 
     return NextResponse.json({ action: result.action, success: true });
   } catch (error) {

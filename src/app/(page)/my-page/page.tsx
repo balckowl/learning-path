@@ -19,6 +19,7 @@ export default async function MyPage() {
 
   const likedArticlesRes = await fetch(`${process.env.BASE_URL}/api/like/user/${session.user.id}`, {
     cache: "no-store",
+    next: { tags: ["likes"] },
   });
 
   const data: UsersAllArticles = await res.json();
@@ -35,7 +36,7 @@ export default async function MyPage() {
             <Tabs defaultValue="account">
               <TabsList>
                 <TabsTrigger value="account">自分の記事</TabsTrigger>
-                <TabsTrigger value="password">いいねした記事</TabsTrigger>
+                <TabsTrigger value="password">保存した記事</TabsTrigger>
               </TabsList>
               <TabsContent value="account">
                 {articles.map((article) => (
