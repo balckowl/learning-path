@@ -84,6 +84,11 @@ export const DELETE = async (req: NextRequest, { params }: { params: { articleId
 
   // トランザクションで削除処理を実行
   const result = await prisma.$transaction(async (prisma) => {
+    // Like の削除
+    await prisma.like.deleteMany({
+      where: { articleId: id },
+    });
+
     // ノードの削除
     const deletedNodesCount = await prisma.node.deleteMany({
       where: { articleId: id },
