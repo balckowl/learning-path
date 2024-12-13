@@ -9,7 +9,7 @@ export default async function CategorySection() {
   const categories: Category[] = await res.json();
 
   return (
-    <div className="bg-muted">
+    <div className="box-content border-y-[10px] border-white bg-muted">
       <div className="flex justify-center">
         <div className="w-[95%] px-[10px] py-[150px] pt-[100px] lg:w-[70%]">
           <div>

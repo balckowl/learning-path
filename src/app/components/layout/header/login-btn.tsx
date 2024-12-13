@@ -9,7 +9,7 @@ export default function LoginBtn() {
     <Button
       onClick={() => signIn()}
       variant="ghost"
-      className="flex gap-2 rounded-full bg-yellow-300 hover:bg-yellow-400"
+      className="flex gap-2 rounded-full bg-green-300 hover:bg-green-400"
     >
       <LogIn size={15} />
       ログイン

@@ -21,8 +21,6 @@ export default async function Page({
   const { articles, totalArticles } = articlesBytotalArticles;
   const limit = 9;
 
-  console.log(articles);
-
   return (
     <div>
       {articles.length > 0 ? (

@@ -17,7 +17,7 @@ export default function Article({ article }: { article: GalleryArticle }) {
       {/* タイトルとカテゴリ */}
       <div className="h-[150px]">
         <h2 className="mb-[5px] text-2xl font-bold">{truncatedTitle}</h2>
-        <p className="inline-block rounded-xl bg-green-200 p-[0.5em] text-xs">{article.category.name}</p>
+        <p className="inline-block rounded-xl bg-green-200 px-2 py-1 text-xs">{article.category.name}</p>
       </div>
 
       {/* 投稿情報 */}
