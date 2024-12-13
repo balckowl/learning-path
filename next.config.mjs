@@ -13,6 +13,9 @@ const nextConfig = {
             },
         ],
     },
+    // output: "standalone",
+    // productionBrowserSourceMaps:true,
+    // reactStrictMode: true,
 };
 
 export default nextConfig;
