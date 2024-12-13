@@ -2,13 +2,18 @@ import { format } from "date-fns";
 import { TagIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth/next";
 
+import LikeButton from "@/app/components/article/like-button";
 import Card from "@/app/components/layout/article/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { authOptions } from "@/lib/auth";
 import { GalleryArticle } from "@/types/gallery-articles";
 
 export default async function Page({ params }: { params: { articleId: string } }) {
   const { articleId } = params;
+
+  const session = await getServerSession(authOptions);
 
   const res = await fetch(`${process.env.BASE_URL}/api/article/${articleId}`, {
     cache: "no-store",
@@ -30,7 +35,10 @@ export default async function Page({ params }: { params: { articleId: string } }
           <div className="absolute left-0 top-0 flex items-center gap-5">
             <p className="bg-yellow-300 px-3 py-1">{article.category.name}</p>
           </div>
-          <h1 className="mb-1 text-3xl font-bold">{article.title}</h1>
+          <div className="flex items-center">
+            <h1 className="mb-1 text-3xl font-bold">{article.title}</h1>
+            {session && <LikeButton articleId={articleId} userId={session.user.id} />}
+          </div>
           <div className="flex cursor-pointer items-center gap-3 text-[14px]">
             {article.tags.map((tag) => (
               <Link
