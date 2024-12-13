@@ -14,7 +14,7 @@ export default function ArticleSection({
   children: ReactNode;
 }) {
   return (
-    <div className="bg-yellow-200">
+    <div className="bg-green-100">
       <div className="flex justify-center">
         <div className="w-[95%] px-[10px] py-[100px] lg:w-[70%]">
           <div>
