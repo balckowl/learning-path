@@ -1,8 +1,71 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
-import { authOptions } from "@/lib/auth"; // 認証設定
-import prisma from "@/lib/prisma/client"; // prisma のインスタンスをインポート
+import { authOptions } from "@/lib/auth";
+import { getOgpInfo } from "@/lib/get-ogp-info";
+import prisma from "@/lib/prisma/client";
+
+export const GET = async (req: NextRequest, { params }: { params: { articleId: string } }) => {
+  const { articleId } = params;
+
+  // セッションを取得
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
+  console.log(session);
+
+  // 記事をデータベースから取得
+  const article = await prisma.article.findUnique({
+    include: {
+      author: true,
+      category: true,
+      nodes: true,
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
+    },
+    where: { id: Number(articleId) },
+  });
+
+  if (!article) return NextResponse.json({}, { status: 404 });
+
+  // ノードのOGP情報を追加
+  const updatedNodes = await Promise.all(
+    article.nodes.map(async (node) => {
+      const ogp = await getOgpInfo(node.nodeUrl);
+      return {
+        ...node,
+        ogp, // OGPの画像URLを追加
+      };
+    }),
+  );
+
+  // タグ情報を整形
+  const tags = article.tags.map((tagRelation) => tagRelation.tag);
+
+  // いいねの情報をチェック
+  let hasLiked = false;
+  if (userId) {
+    const like = await prisma.like.findFirst({
+      where: {
+        articleId: Number(articleId),
+        userId: userId,
+      },
+    });
+    hasLiked = !!like; // いいねしていればtrue、していなければfalse
+  }
+
+  const updatedArticle = {
+    ...article,
+    hasLiked, // ユーザーがいいねしているかどうか
+    nodes: updatedNodes,
+    tags,
+  };
+
+  return NextResponse.json(updatedArticle, { status: 200 });
+};
 
 export const DELETE = async (req: NextRequest, { params }: { params: { articleId: string } }) => {
   const session = await getServerSession(authOptions);
