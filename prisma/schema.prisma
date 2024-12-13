@@ -14,6 +14,11 @@ datasource db {
   // directUrl         = env("DIRECT_URL")
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output = "./ERD.png"
+}
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String
@@ -51,6 +56,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Articles      Article[]
+  likes         Like[]
 }
 
 model VerificationToken {
@@ -73,6 +79,7 @@ model Article {
   categoryId String
   category   Category     @relation(fields: [categoryId], references: [id])
   tags       ArticleTag[]
+  likes      Like[]
 }
 
 model Node {
@@ -100,15 +107,23 @@ model Category {
 }
 
 model ArticleTag {
-  id        String  @id
+  id        Int          @id @default(autoincrement())
   articleId Int
   article   Article @relation(fields: [articleId], references: [id])
-  tagId     Int
+  tagId     String
   tag       Tag     @relation(fields: [tagId], references: [id])
 }
 
 model Tag {
-  id       Int          @id
+  id       String       @id
   name     String       @unique
   articles ArticleTag[]
+}
+
+model Like {
+  id        Int     @id @default(autoincrement())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  articleId Int
+  article   Article @relation(fields: [articleId], references: [id])
 }

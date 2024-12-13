@@ -6,40 +6,45 @@ import prisma from "@/lib/prisma/client";
 export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
   const { id } = params;
 
-  // pagenation
+  // ページネーション
   const { searchParams } = new URL(req.url);
   const page = searchParams.get("page") || "1";
   const pageNumber = parseInt(page, 10);
   const limit = 9;
 
-  // 指定されたカテゴリを取得
-  const category = await prisma.category.findUnique({
+  // 指定されたタグを取得
+  const tag = await prisma.tag.findUnique({
     where: { id },
   });
 
-  if (!category) return NextResponse.json({}, { status: 404 });
+  if (!tag) return NextResponse.json({}, { status: 404 });
 
-  // そのカテゴリに属する記事一覧を取得
-  const articles = await prisma.article.findMany({
+  // そのタグに属する記事一覧を ArticleTag から取得
+  const articles = await prisma.articleTag.findMany({
     include: {
-      author: true,
-      category: true,
-      nodes: true,
-      tags: true,
+      article: {
+        include: {
+          author: true,
+          category: true,
+          nodes: true,
+          tags: true,
+        },
+      },
+      tag: true,
     },
     orderBy: {
-      createdAt: "desc",
+      article: {
+        createdAt: "desc",
+      },
     },
-
-    // pagenation
     skip: (pageNumber - 1) * limit,
     take: limit,
-    where: { categoryId: id },
+    where: { tagId: id },
   });
 
-  // 各記事のノードのOGP情報を取得し、データ構造を整える
+  // 記事データの整形
   const updatedArticles = await Promise.all(
-    articles.map(async (article) => {
+    articles.map(async ({ article }) => {
       const updatedNodes = await Promise.all(
         article.nodes.map(async (node) => {
           const ogp = await getOgpInfo(node.nodeUrl);
@@ -59,9 +64,10 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
         ...article,
         nodes: updatedNodes,
         ...authorInfo,
+        tag,
       };
     }),
   );
 
-  return NextResponse.json({ articles: updatedArticles, totalArticles: articles.length });
+  return NextResponse.json({ articles: updatedArticles, totalArticles: updatedArticles.length });
 };

@@ -3,15 +3,32 @@ import { NextRequest, NextResponse } from "next/server";
 import { getOgpInfo } from "@/lib/get-ogp-info";
 import prisma from "@/lib/prisma/client";
 
-export const GET = async (req: NextRequest) => {
-  const { searchParams } = new URL(req.url);
-  const page = searchParams.get("page") || "1";
+export const GET = async (req: NextRequest, { params }: { params: { userId: string } }) => {
+  const { userId } = params;
 
+  if (!userId) {
+    return NextResponse.json({ error: "userId is required", success: false }, { status: 400 });
+  }
+
+  const page = new URL(req.url).searchParams.get("page") || "1";
   const pageNumber = parseInt(page, 10);
   const limit = 9;
 
-  const totalArticles = await prisma.article.count();
+  // ユーザーがいいねした記事のIDを取得
+  const likedArticles = await prisma.like.findMany({
+    select: { articleId: true },
+    where: { userId: userId },
+  });
 
+  const articleIds = likedArticles.map((like) => like.articleId);
+
+  if (articleIds.length === 0) {
+    return NextResponse.json({ articles: [], totalArticles: 0 });
+  }
+
+  const totalArticles = articleIds.length;
+
+  // いいねした記事の情報を取得
   const articles = await prisma.article.findMany({
     include: {
       author: true,
@@ -28,6 +45,11 @@ export const GET = async (req: NextRequest) => {
     },
     skip: (pageNumber - 1) * limit,
     take: limit,
+    where: {
+      id: {
+        in: articleIds,
+      },
+    },
   });
 
   // 各記事のノードのOGP情報を取得し、データ構造を整える

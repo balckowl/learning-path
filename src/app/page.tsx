@@ -2,6 +2,7 @@ import { GalleryArticle } from "@/types/gallery-articles";
 
 import ArticleSection from "./components/shared/article-section";
 import CategorySection from "./components/shared/category-section";
+import TagSection from "./components/shared/tag-section";
 import MoreBtn from "./components/top/more-btn";
 import RecommendLogin from "./components/top/recommend-login";
 
@@ -16,10 +17,11 @@ export default async function Home() {
 
   return (
     <>
-      <ArticleSection title="新着Path一覧" articles={articles}>
+      <ArticleSection title="新着パス一覧" articles={articles}>
         <MoreBtn />
       </ArticleSection>
       <CategorySection />
+      <TagSection />
       <RecommendLogin />
     </>
   );
