@@ -8,6 +8,11 @@ import prisma from "@/lib/prisma/client";
 export const GET = async (req: NextRequest, { params }: { params: { articleId: string } }) => {
   const { articleId } = params;
 
+  // セッションを取得
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
+  // 記事をデータベースから取得
   const article = await prisma.article.findUnique({
     include: {
       author: true,
@@ -24,6 +29,7 @@ export const GET = async (req: NextRequest, { params }: { params: { articleId: s
 
   if (!article) return NextResponse.json({}, { status: 404 });
 
+  // ノードのOGP情報を追加
   const updatedNodes = await Promise.all(
     article.nodes.map(async (node) => {
       const ogp = await getOgpInfo(node.nodeUrl);
@@ -37,8 +43,21 @@ export const GET = async (req: NextRequest, { params }: { params: { articleId: s
   // タグ情報を整形
   const tags = article.tags.map((tagRelation) => tagRelation.tag);
 
+  // いいねの情報をチェック
+  let hasLiked = false;
+  if (userId) {
+    const like = await prisma.like.findFirst({
+      where: {
+        articleId: Number(articleId),
+        userId: userId,
+      },
+    });
+    hasLiked = !!like; // いいねしていればtrue、していなければfalse
+  }
+
   const updatedArticle = {
     ...article,
+    hasLiked, // ユーザーがいいねしているかどうか
     nodes: updatedNodes,
     tags,
   };
