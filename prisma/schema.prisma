@@ -14,10 +14,10 @@ datasource db {
   // directUrl         = env("DIRECT_URL")
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-  output = "./ERD.png"
-}
+// generator erd {
+//   provider = "prisma-erd-generator"
+//   output = "./ERD.png"
+// }
 
 model Account {
   id                       String  @id @default(cuid())

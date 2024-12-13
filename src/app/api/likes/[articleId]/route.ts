@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma/client";
 
-export const GET = async (req: NextRequest) => {
-  const { searchParams } = new URL(req.url);
-  const articleId = searchParams.get("articleId");
+export const GET = async (req: NextRequest, { params }: { params: { articleId: string } }) => {
+  const { articleId } = params;
 
   if (!articleId) {
     return NextResponse.json({ error: "articleId is required", success: false }, { status: 400 });
