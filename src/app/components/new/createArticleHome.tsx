@@ -52,7 +52,7 @@ const schema = z.object({
     .length(3, { message: "タグは3つまで指定してください。" }),
 });
 
-type FormData = z.infer<typeof schema>;
+export type FormData = z.infer<typeof schema>;
 type ItemType = z.infer<typeof schema>["nodes"][number];
 
 type Props = {
@@ -301,7 +301,7 @@ export default function CreateArticleHome({ categories, options }: Props) {
                     </Button>
                   </DialogTrigger>
 
-                  <DialogContent className="flex h-[90vh] flex-col items-center overflow-y-auto">
+                  <DialogContent className="flex h-[90vh] flex-col items-center overflow-y-auto bg-green-200">
                     <DialogHeader>
                       <DialogTitle className="flex items-center gap-3">
                         <Eye size={30} />

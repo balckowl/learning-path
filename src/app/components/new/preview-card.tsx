@@ -14,12 +14,12 @@ import { FormDataNode } from "@/types/form-data";
 
 import CodeBlock from "../article/code-block";
 
-export default function PreviewCard({ index, node }: { index: number; node: FormDataNode }) {
+export default function PreviewCard({ node }: { node: FormDataNode }) {
   return (
     <div className="mx-auto rounded-lg border bg-[#fffefc] p-6 shadow-sm">
       <Link href={node.nodeUrl}>
         <h3 className="mb-4 text-[23px] font-semibold">
-          {`${index + 1}. ${node.nodeTitle ? node.nodeTitle : "ここにノードタイトル"}`}
+          {`${node.nodeTitle ? node.nodeTitle : "ここにノードタイトル"}`}
         </h3>
         <div className="flex flex-col gap-5 md:flex-row md:items-center">
           <Image
