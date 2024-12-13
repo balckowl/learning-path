@@ -19,6 +19,7 @@ export default async function Page({ params }: { params: { articleId: string } }
   const res = await fetch(`${process.env.BASE_URL}/api/article/${articleId}`, {
     cache: "no-store",
     headers: Object.fromEntries(headers()),
+    next: { tags: ["likes2"] },
   });
 
   if (!res.ok) {
