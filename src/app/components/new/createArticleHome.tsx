@@ -30,7 +30,10 @@ const schema = z.object({
   nodes: z
     .array(
       z.object({
-        comment: z.string().optional(),
+        comment: z
+          .string()
+          .min(0, { message: "タイトルを入力してください" })
+          .max(80, { message: "タイトルは最大80文字です" }),
         nodeTitle: z
           .string()
           .min(1, { message: "タイトルを入力してください" })

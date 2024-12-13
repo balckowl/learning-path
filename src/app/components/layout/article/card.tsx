@@ -30,7 +30,7 @@ export default function Card({ node }: { node: Node }) {
         </div>
         {node.comment && (
           <ReactMarkdown
-            className="mt-4 rounded-md border bg-white p-4"
+            className="markdown mt-4 rounded-md border bg-white p-4"
             children={node.comment}
             components={{
               code: CodeBlock,
