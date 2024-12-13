@@ -5,6 +5,7 @@ import DeleteButton from "@/app/components/myPage/delete-button";
 import Blockpage from "@/app/components/new/blockpage";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { authOptions } from "@/lib/auth";
+import { GalleryArticle } from "@/types/gallery-articles";
 import { UsersAllArticles } from "@/types/user-articles";
 
 export default async function MyPage() {
@@ -21,13 +22,13 @@ export default async function MyPage() {
   });
 
   const data: UsersAllArticles = await res.json();
-  const likedArticles = await likedArticlesRes.json();
+  const likedArticles: { articles: GalleryArticle[] } = await likedArticlesRes.json();
   const { articles } = data;
 
   console.log(likedArticles);
 
   return (
-    <div className="min-h-[calc(100vh-60px-50px)] bg-yellow-200">
+    <div className="min-h-[calc(100vh-60px-50px)] bg-green-200">
       <div className="flex justify-center">
         <div className="w-[95%] px-[10px] py-[100px] lg:w-[70%]">
           <div>
@@ -44,7 +45,7 @@ export default async function MyPage() {
                       key={article.id}
                       className="container relative mb-2 flex w-full items-center justify-between rounded bg-white py-7"
                     >
-                      <p className="absolute left-0 top-0 bg-yellow-300 px-3 py-1">{article.categoryName}</p>
+                      <p className="absolute left-0 top-0 bg-green-300 px-3 py-1">{article.categoryName}</p>
                       <p className="mt-[15px] text-xl font-bold">{article.title}</p>
                     </Link>
                     <DeleteButton articleId={article.id} />
@@ -59,7 +60,7 @@ export default async function MyPage() {
                       key={article.id}
                       className="container relative mb-2 flex w-full items-center justify-between rounded bg-white py-7"
                     >
-                      <p className="absolute left-0 top-0 bg-yellow-300 px-3 py-1">{article.categoryName}</p>
+                      <p className="absolute left-0 top-0 bg-green-300 px-3 py-1">{article.category.name}</p>
                       <p className="mt-[15px] text-xl font-bold">{article.title}</p>
                     </Link>
                   </div>

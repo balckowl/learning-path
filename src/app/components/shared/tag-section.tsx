@@ -8,7 +8,7 @@ export default async function TagSection() {
   const tags: Tag[] = await res.json();
 
   return (
-    <div className="bg-red-300">
+    <div className="box-content border-b-[10px] border-white bg-muted">
       <div className="flex justify-center">
         <div className="w-[95%] px-[10px] py-[150px] pt-[100px] lg:w-[70%]">
           <div>

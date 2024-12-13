@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { TagIcon } from "lucide-react";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth/next";
@@ -8,7 +9,7 @@ import LikeButton from "@/app/components/article/like-button";
 import Card from "@/app/components/layout/article/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authOptions } from "@/lib/auth";
-import { GalleryArticle } from "@/types/gallery-articles";
+import { GalleryArticleWithHasLiked } from "@/types/mypage";
 
 export default async function Page({ params }: { params: { articleId: string } }) {
   const { articleId } = params;
@@ -17,29 +18,31 @@ export default async function Page({ params }: { params: { articleId: string } }
 
   const res = await fetch(`${process.env.BASE_URL}/api/article/${articleId}`, {
     cache: "no-store",
+    headers: Object.fromEntries(headers()),
   });
 
   if (!res.ok) {
     return notFound();
   }
 
-  const article: GalleryArticle = await res.json();
+  const article: GalleryArticleWithHasLiked = await res.json();
 
   const formattedCreatedAt = format(article.createdAt, "yyyy/MM/dd");
-  const formattedUpdatedAt = format(article.updatedAt, "yyyy/MM/dd");
 
   return (
-    <div className="bg-yellow-200">
+    <div className="bg-green-200">
       <div className="flex justify-center px-[10px] py-[100px]">
         <div className="relative w-full rounded-md bg-white p-8 md:w-[85%] xl:w-3/4 xl:p-[70px]">
           <div className="absolute left-0 top-0 flex items-center gap-5">
-            <p className="bg-yellow-300 px-3 py-1">{article.category.name}</p>
+            <Link href={`/category/${article.category.id}`} className="bg-green-300 px-3 py-1 hover:bg-green-400">
+              {article.category.name}
+            </Link>
           </div>
-          <div className="flex items-center">
-            <h1 className="mb-1 text-3xl font-bold">{article.title}</h1>
-            {session && <LikeButton articleId={articleId} userId={session.user.id} />}
+          <div className="mb-[10px] flex items-center">
+            <h1 className="text-3xl font-bold">{article.title}</h1>
+            {session && <LikeButton articleId={articleId} userId={session.user.id} hasLiked={article.hasLiked} />}
           </div>
-          <div className="flex cursor-pointer items-center gap-3 text-[14px]">
+          <div className="mb-[5px] flex cursor-pointer items-center gap-3 text-[14px]">
             {article.tags.map((tag) => (
               <Link
                 key={tag.id}
@@ -57,10 +60,6 @@ export default async function Page({ params }: { params: { articleId: string } }
                 投稿日:
                 {formattedCreatedAt}
               </time>
-              <time className="flex items-center gap-2 text-gray-600">
-                最終投稿日:
-                {formattedUpdatedAt}
-              </time>
             </div>
             <div className="flex items-center gap-3">
               <Avatar className="mx-auto size-9 border">
@@ -74,7 +73,7 @@ export default async function Page({ params }: { params: { articleId: string } }
             {/* Vertical line connecting the cards */}
             {/* <div className="absolute left-1/2 z-0 h-full w-1 -translate-x-1/2 bg-gray-500"></div> */}
             <div className="flex h-full gap-10">
-              <div className="relative w-[12px] bg-yellow-100">
+              <div className="relative w-[12px] bg-green-100">
                 {[...new Array(article.nodes.length)].map((_, i) => (
                   <div
                     key={i}
@@ -85,7 +84,7 @@ export default async function Page({ params }: { params: { articleId: string } }
                       top: `${(2 * i + 1) * (100 / (article.nodes.length * 2))}%`,
                       transform: "translate(-50%, -50%)",
                     }}
-                    className={`absolute size-[45px] rounded-full bg-yellow-300 font-bold text-white`}
+                    className={`absolute size-[45px] rounded-full bg-green-300 font-bold text-white`}
                   >
                     {i + 1}
                   </div>
@@ -93,8 +92,8 @@ export default async function Page({ params }: { params: { articleId: string } }
               </div>
               <div className="flex-1 space-y-8">
                 {/*後で型作ります*/}
-                {article.nodes.map((node, index) => (
-                  <Card key={node.id} node={node} index={index} />
+                {article.nodes.map((node) => (
+                  <Card key={node.id} node={node} />
                 ))}
               </div>
             </div>

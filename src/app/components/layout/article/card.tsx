@@ -13,13 +13,11 @@ import { Node } from "@/types/gallery-articles";
 
 import CodeBlock from "../../article/code-block";
 
-export default function Card({ index, node }: { index: number; node: Node }) {
+export default function Card({ node }: { node: Node }) {
   return (
     <div className="mx-auto rounded-lg border bg-[#fffefc] p-6 hover:shadow-sm">
       <Link href={node.nodeUrl} target="_blank">
-        <h3 className="mb-4 text-[23px] font-semibold">
-          {index + 1}.{node.nodeTitle}
-        </h3>
+        <h3 className="mb-4 text-[23px] font-semibold">{node.nodeTitle}</h3>
         <div className="flex flex-col gap-5 md:flex-row md:items-center">
           <Image
             src={node.ogp["og:image"]}
@@ -30,15 +28,17 @@ export default function Card({ index, node }: { index: number; node: Node }) {
           />
           <p className="w-full text-xl md:w-[65%]">{node.ogp["og:title"]}</p>
         </div>
-        <ReactMarkdown
-          className="mt-4 rounded-md border bg-white p-4"
-          children={node.comment}
-          components={{
-            code: CodeBlock,
-          }}
-          remarkPlugins={[gfm, remarkMath]}
-          rehypePlugins={[rehypeKatex]}
-        />
+        {node.comment && (
+          <ReactMarkdown
+            className="mt-4 rounded-md border bg-white p-4"
+            children={node.comment}
+            components={{
+              code: CodeBlock,
+            }}
+            remarkPlugins={[gfm, remarkMath]}
+            rehypePlugins={[rehypeKatex]}
+          />
+        )}
       </Link>
     </div>
   );

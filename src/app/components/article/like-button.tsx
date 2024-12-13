@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 
 type Props = {
   articleId: string;
+  hasLiked: boolean;
   userId: string;
 };
 
-export default function LikeButton({ articleId, userId }: Props) {
-  const [isLike, setIsLike] = useState(false);
+export default function LikeButton({ articleId, hasLiked, userId }: Props) {
+  const [isLike, setIsLike] = useState(hasLiked);
 
   const toggleLike = () => {
     setIsLike(!isLike);

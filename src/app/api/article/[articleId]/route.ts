@@ -12,6 +12,8 @@ export const GET = async (req: NextRequest, { params }: { params: { articleId: s
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
 
+  console.log(session);
+
   // 記事をデータベースから取得
   const article = await prisma.article.findUnique({
     include: {
