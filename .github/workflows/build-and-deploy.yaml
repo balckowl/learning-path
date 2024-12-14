@@ -9,6 +9,7 @@ on:
       - "src/**"
       - ".github/workflows/**"
       - "Dockerfile"
+      - "Dockerfile.*"
 
 jobs:
   build-and-push-image:
