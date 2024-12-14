@@ -10,9 +10,6 @@ on:
       - ".github/workflows/**"
       - "Dockerfile"
 
-env:
-  REGISTRY: ghcr.io
-
 jobs:
   build-and-push-image:
     name: Build and Push Docker Image
@@ -49,6 +46,7 @@ jobs:
           build-args: |
             DATABASE_URL=${{secrets.DATABASE_URL}}
             NEXT_PUBLIC_SUPABASE_URL=${{secrets.NEXT_PUBLIC_SUPABASE_URL}}
+            BASE_URL=${{secrets.BASE_URL}}
 
   update-kubernetes-manifest:
     runs-on: ubuntu-latest
